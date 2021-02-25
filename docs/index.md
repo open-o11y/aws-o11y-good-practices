@@ -12,7 +12,10 @@ The way we think about this space is as follows:
 ![o11y space](images/o11y-space.png)
 
 The o11y space as shown above has six dimensions you can combine to arrive at
-a specifc solution. For example, you might be looking for a solution to:
+a specifc solution. [Learn more …](background.md)
+
+
+For example, you might be looking for a solution to:
 
 !!! question "Examplary solution specification"
     I need a logging solution for a Python app I'm running on EKS on Fargate
