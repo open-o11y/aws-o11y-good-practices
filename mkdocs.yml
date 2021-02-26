@@ -5,6 +5,7 @@ nav:
 - Home:
   - index.md
   - background.md
+  - telemetry.md
 - 'By Compute':
   - EKS: eks.md
   - ECS: ecs.md
