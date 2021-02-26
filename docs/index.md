@@ -1,19 +1,17 @@
 # Welcome!
 
 We are covering recipes for observability (o11y) solutions at AWS on this site.
-This includes managed services such as 
-[Amazon Managed Service for Prometheus](https://aws.amazon.com/prometheus/)
-(AMP), libraries/SDKs and agents, for example as provided by [OpenTelemetry](https://opentelemetry.io/)
-or [FluentBit](https://fluentbit.io/). We want to address the needs of both developers and
+This includes managed services such as [Amazon Managed Service for Prometheus][amp]
+(AMP), libraries/SDKs and agents, for example as provided by [OpenTelemetry][otel]
+or [FluentBit][fluentbit]. We want to address the needs of both developers and
 infrastructure folks.
 
 The way we think about this space is as follows:
 
 ![o11y space](images/o11y-space.png)
 
-The o11y space as shown above has six dimensions you can combine to arrive at
-a specifc solution. [Learn more …](background.md)
-
+The o11y space as shown above has [six dimensions][dimensions] you can combine to arrive at
+a specifc solution.
 
 For example, you might be looking for a solution to:
 
@@ -53,3 +51,8 @@ Alternatively, you can search the site pressing `/` or the `s` key:
 
 Raise issues or send in pull requests against the repo.
 
+
+[amp]: https://aws.amazon.com/prometheus/
+[otel]: https://opentelemetry.io/
+[fluentbit]: https://fluentbit.io/
+[dimensions]: dimensions.md

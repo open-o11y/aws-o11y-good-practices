@@ -4,7 +4,7 @@ copyright: 'Copyright &copy; Amazon 2021 '
 nav:
 - Home:
   - index.md
-  - background.md
+  - dimensions.md
   - telemetry.md
 - 'By Compute':
   - EKS: eks.md

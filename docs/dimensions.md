@@ -1,4 +1,4 @@
-# Background
+# Dimensions
 
 In the context of this site we consider the o11y space along six dimensions.
 Looking at each dimension independently is beneficial from an synthetic
