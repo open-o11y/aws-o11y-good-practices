@@ -20,7 +20,7 @@ Let's now have a look at each of the six dimensions one by one:
 
 ## Analytics
 
-An umbrella term for all kinds of signal destinations including long term
+Analytics is an umbrella term for all kinds of signal destinations including long term
 storage and graphical interfaces that let you consume signals. As a developer,
 you want access to an UI or an API that allows you to discover, look up, and
 correlate signals to troubleshoot your service. In an infrastructure or platform
@@ -38,11 +38,11 @@ So, how do the signals arrive in the destinations? Glad you asked, it's …
 
 ## Telemetry
 
-How the signals are collected and routed. The signals can come from two sources:
-either your application source code, see [language](#language) section, or
-from stuff your app depends on, such as state managed in datastores or databases
-as well as infrastructure like VPCs, as discussed
-in [infra & persistent data](#infra-persistent-data).
+How the signals are collected and routed to analytics. The signals can come 
+from two sources: either your application source code (see also the
+[language](#language) section) or from things your application depends on, 
+such as state managed in datastores as well as infrastructure like VPCs (see
+also the [infra & data](#infra-data) section).
 
 [Learn more about telemetry …](../telemetry)
 
@@ -51,34 +51,44 @@ in [infra & persistent data](#infra-persistent-data).
 This dimension is concerned with the programming language you use for writing
 your service or application. Here, we're dealing with SDKs and libraries, such 
 as the [X-Ray SDKs][xraysdks] or what OpenTelemetry provides in the context
-of [instrumentation][otelinst].
+of [instrumentation][otelinst]. You want to make sure that an o11y solution
+supports your programming language of choice for a given signal type such as
+logs or metrics.
 
-## Infra & persistent data
+## Infra & data
 
-Any sort of application-external dependencies, be it infrastructure like 
-a VPC or a datastore like RDS or DynamoDB or a queue like SQS. This includes
-but is not limited to the following:
+In this dimension we consider ny sort of application-external dependencies, 
+be it infrastructure like the VPC the service is running in or a datastore
+like RDS or DynamoDB or a queue like SQS. 
+
+!!! tip "Commonalities"
+    One thing all the sources in the "Infra & Data" dimension have
+    in common is that they are located outside of your application (as well
+    as the compute environment your app runs in) and with that you have to treat
+    them as an opaque box.
+
+This dimension includes but is not limited to:
 
 - AWS infrastructure, for example [VPC flow logs][vpcfl].
 - Secondary APIs such as [Kubernetes control plane logs][kubecpl].
 - Signals from datastores, such as or [S3][s3mon], [RDS][rdsmon] or [SQS][sqstrace].
 
-!!! tip "Commonalities"
-    One thing all the sources in the "Infrak & Persistent Data" dimension have
-    in common is that they are located outside of your application (as well
-    as the compute environment your app runs in) and with that you have to treat
-    them as an opaque box.
 
 ## Compute unit
 
-The way your code is packagedm, scheduled, and run. For example, in Lambda that's a
-function and in ECS and EKS that's a container (and tasks and pods
-respectively).
+The way your package, schedule, and run your code. For example, in Lambda that's a
+function and in [ECS][ecs] and [EKS][eks] that unit is a container running in
+a tasks (ECS) or pods (EKS), respectively. Containerized environments like Kubernetes
+often allow for two options concerning telemetry deployments: as side cars or
+as per-node (instance) daemon processes.
 
 ## Compute engine
 
-This refers to the base runtime environment, which may (EC2 instance, for
-example) or may not (Fargate, Lambda) be your responsibility to maintain.
+This dimension refers to the base runtime environment, which may (in case of an
+EC2 instance, for example) or may not (serverless offerings such as Fargate or Lambda)
+be your responsibility to provision and patch. Depending on the compute engine
+you use, the telemetry part might already be part of the offering, for example,
+[EKS on Fargate][firelensef] has log routing via Fluent Bit integrated.
 
 
 [aes]: https://aws.amazon.com/elasticsearch-service/ "Amazon Elasticsearch Service"
@@ -94,6 +104,7 @@ example) or may not (Fargate, Lambda) be your responsibility to maintain.
 [eks]: https://aws.amazon.com/eks/ "Amazon Elastic Kubernetes Service"
 [fargate]: https://aws.amazon.com/fargate/ "AWS Fargate"
 [fluentbit]: https://fluentbit.io/ "Fluent Bit"
+[firelensef]: https://aws.amazon.com/blogs/containers/fluent-bit-for-amazon-eks-on-aws-fargate-is-here/ "Fluent Bit for Amazon EKS on AWS Fargate is here"
 [jaeger]: https://www.jaegertracing.io/ "Jaeger"
 [kafka]: https://kafka.apache.org/ "Apache Kafka"
 [kubecpl]: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html "Amazon EKS control plane logging"
