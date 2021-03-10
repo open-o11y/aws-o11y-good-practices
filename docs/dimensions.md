@@ -27,6 +27,8 @@ correlate signals to troubleshoot your service. In an infrastructure or platform
 role you want access to an UI or an API that allows you to manage, discover,
 look up, and correlate signals to understand the state of the infrastructure.
 
+![Grafana screen shot](images/grafana.png)
+
 Ultimately, this is the most interesting dimension from a human point of view.
 However, in order to be able to reap the benefits we first have to invest a bit
 of work: we need to instrument our software and external dependencies and ingest
@@ -37,7 +39,7 @@ So, how do the signals arrive in the destinations? Glad you asked, it's …
 ## Telemetry
 
 How the signals are collected and routed. The signals can come from two sources:
-either your application source code, see [language](#language) section, or 
+either your application source code, see [language](#language) section, or
 from stuff your app depends on, such as state managed in datastores or databases
 as well as infrastructure like VPCs, as discussed
 in [infra & persistent data](#infra-persistent-data).
@@ -48,8 +50,8 @@ in [infra & persistent data](#infra-persistent-data).
 
 This dimension is concerned with the programming language you use for writing
 your service or application. Here, we're dealing with SDKs and libraries, such 
-as the [X-Ray SDKs][x-ray-sdks] or what OpenTelemetry provides in the context
-of [instrumentation][otel-instrumentation].
+as the [X-Ray SDKs][xraysdks] or what OpenTelemetry provides in the context
+of [instrumentation][otelinst].
 
 ## Infra & persistent data
 
@@ -57,10 +59,9 @@ Any sort of application-external dependencies, be it infrastructure like
 a VPC or a datastore like RDS or DynamoDB or a queue like SQS. This includes
 but is not limited to the following:
 
-- AWS infrastructure, for example [VPC flow logs][vpc-flow-logs].
-- Secondary APIs such as [Kubernetes API logs][k8s-api-logs].
-- Signals from datastores and databases, such as or
-  [S3 bucket access logs][s3-bucket-logs] or traces from RDS.
+- AWS infrastructure, for example [VPC flow logs][vpcfl].
+- Secondary APIs such as [Kubernetes control plane logs][kubecpl].
+- Signals from datastores, such as or [S3][s3mon], [RDS][rdsmon] or [SQS][sqstrace].
 
 !!! tip "Commonalities"
     One thing all the sources in the "Infrak & Persistent Data" dimension have
@@ -80,9 +81,31 @@ This refers to the base runtime environment, which may (EC2 instance, for
 example) or may not (Fargate, Lambda) be your responsibility to maintain.
 
 
-
-[vpc-flow-logs]: https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html
-[s3-bucket-logs]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html
-[k8s-api-logs]: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html
-[x-ray-sdks]: https://docs.aws.amazon.com/xray/index.html
-[otel-instrumentation]: https://opentelemetry.io/docs/concepts/instrumenting/
+[aes]: https://aws.amazon.com/elasticsearch-service/ "Amazon Elasticsearch Service"
+[adot]: https://aws-otel.github.io/ "AWS Distro for OpenTelemetry"
+[amg]: https://aws.amazon.com/grafana/ "Amazon Managed Service for Grafana"
+[amp]: https://aws.amazon.com/prometheus/ "Amazon Managed Service for Prometheus"
+[batch]: https://aws.amazon.com/batch/ "AWS Batch"
+[beans]: https://aws.amazon.com/elasticbeanstalk/ "AWS Elastic Beanstalk"
+[cw]: https://aws.amazon.com/cloudwatch/ "Amazon CloudWatch"
+[dimensions]: ../dimensions
+[ec2]: https://aws.amazon.com/ec2/ "Amazon EC2"
+[ecs]: https://aws.amazon.com/ecs/ "Amazon Elastic Container Service"
+[eks]: https://aws.amazon.com/eks/ "Amazon Elastic Kubernetes Service"
+[fargate]: https://aws.amazon.com/fargate/ "AWS Fargate"
+[fluentbit]: https://fluentbit.io/ "Fluent Bit"
+[jaeger]: https://www.jaegertracing.io/ "Jaeger"
+[kafka]: https://kafka.apache.org/ "Apache Kafka"
+[kubecpl]: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html "Amazon EKS control plane logging"
+[lambda]: https://aws.amazon.com/lambda/ "AWS Lambda"
+[lightsail]: https://aws.amazon.com/lightsail/ "Amazon Lightsail"
+[otel]: https://opentelemetry.io/ "OpenTelemetry"
+[otelinst]: https://opentelemetry.io/docs/concepts/instrumenting/
+[promex]: https://prometheus.io/docs/instrumenting/exporters/ "Prometheus exporters and integrations"
+[rdsmon]: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.LoggingAndMonitoring.html "Logging and monitoring in Amazon RDS"
+[s3]: https://aws.amazon.com/s3/ "Amazon S3"
+[s3mon]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-incident-response.html "Logging and monitoring in Amazon S3"
+[sqstrace]: https://docs.aws.amazon.com/xray/latest/devguide/xray-services-sqs.html "Amazon SQS and AWS X-Ray"
+[vpcfl]: https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html "VPC Flow Logs"
+[xray]: https://aws.amazon.com/xray/ "AWS X-Ray"
+[xraysdks]: https://docs.aws.amazon.com/xray/index.html
