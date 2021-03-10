@@ -2,23 +2,23 @@
 
 We are covering recipes for observability (o11y) solutions at AWS on this site.
 This includes managed services such as [Amazon Managed Service for Prometheus][amp]
-(AMP), libraries/SDKs and agents, for example as provided by [OpenTelemetry][otel]
+(AMP) as well as libraries & agents, for example as provided by [OpenTelemetry][otel]
 or [Fluent Bit][fluentbit]. We want to address the needs of both developers and
 infrastructure folks.
 
-The way we think about this space is as follows:
-The o11y space as shown above has [six dimensions][dimensions/] you can combine to arrive at
-a specifc solution.
+The way we think about the o11y space is as follows: we decompose it into
+[six dimensions][dimensions] you can then combine to arrive at a specifc solution:
 
-| dimension | examples |
-------------|-----------
-| analytics | [AMP][amp] AMG ES CW X-Ray S3 Jaeger |
-| telemetry | ADOT Fluent Bit CW agent X-Ray agent |
-| languages | Java Python .NET JavaScript Go Rust |
-| infra & persistent data | VPC flow logs Prometheus exporters Docker logs RDS
-traces |
-| compute unit | Batch ECS EKS Beanstalk Lambda|
-| compute engine | Fargate EC2 Lightsail |
+| **dimension** | **examples** |
+|---------------|--------------|
+| analytics | [AMP][amp] &middot; [AMG][amg] &middot; [CW][cw] &middot; [X-Ray][xray] &middot; [Jaeger][jaeger] |
+|           | [AES][aes] &middot; [S3][s3] &middot; [Kafka][kafka] |
+| telemetry | [ADOT][adot] &middot; [Fluent Bit][fluentbit] &middot; CW agent &middot; X-Ray agent |
+| languages | Java &middot; Python &middot; .NET &middot; JavaScript &middot; Go &middot; Rust |
+| infra & data | [VPC flow logs][vpcfl] &middot; [EKS CP][kubecpl] &middot;  [exporters][promex]  |
+|                         | [S3 mon][s3mon] &middot; [RDS mon][rdsmon] &middot; [SQS tracing][sqstrace] |
+| compute unit | [Batch][batch] &middot; [ECS][ecs] &middot; [EKS][eks] &middot; [AEB][beans] &middot; [Lambda][lambda] |
+| compute engine | [Fargate][fargate] &middot; [EC2][ec2] &middot; [Lightsail][lightsail] |
 
 For example, you might be looking for a solution to:
 
@@ -36,13 +36,13 @@ For example, you might be looking for a solution to:
 Not every dimension needs to be specified and sometimes it's hard to decide where
 to start. Try different paths and compare the pros and cons of certain recipes.
 
-!!! note "Navigation categories"
-    To simplify navigation, we're grouping the six layers into the following
-    catagories:
+To simplify navigation, we're grouping the six dimension into the following
+catagories:
 
-    - **By Compute** covering compute engines and units
-    - **By Language** covering languages
-    - **By Destination** covering telemetry and analytics
+- **By Compute**: covering compute engines and units
+- **By Infra & Data**: covering infrastructure and datastores
+- **By Language**: covering languages
+- **By Destination**: covering telemetry and analytics
 
 [Learn more about dimensions …](dimensions/)
 
@@ -61,8 +61,29 @@ Alternatively, you can search the site pressing `/` or the `s` key:
 
 Raise issues or send in pull requests against the repo.
 
-
+[aes]: https://aws.amazon.com/elasticsearch-service/ "Amazon Elasticsearch Service"
+[adot]: https://aws-otel.github.io/ "AWS Distro for OpenTelemetry"
+[amg]: https://aws.amazon.com/grafana/ "Amazon Managed Service for Grafana"
 [amp]: https://aws.amazon.com/prometheus/ "Amazon Managed Service for Prometheus"
-[otel]: https://opentelemetry.io/
-[fluentbit]: https://fluentbit.io/
-[dimensions]: dimensions.md
+[batch]: https://aws.amazon.com/batch/ "AWS Batch"
+[beans]: https://aws.amazon.com/elasticbeanstalk/ "AWS Elastic Beanstalk"
+[cw]: https://aws.amazon.com/cloudwatch/ "Amazon CloudWatch"
+[dimensions]: ../dimensions
+[ec2]: https://aws.amazon.com/ec2/ "Amazon EC2"
+[ecs]: https://aws.amazon.com/ecs/ "Amazon Elastic Container Service"
+[eks]: https://aws.amazon.com/eks/ "Amazon Elastic Kubernetes Service"
+[fargate]: https://aws.amazon.com/fargate/ "AWS Fargate"
+[fluentbit]: https://fluentbit.io/ "Fluent Bit"
+[jaeger]: https://www.jaegertracing.io/ "Jaeger"
+[kafka]: https://kafka.apache.org/ "Apache Kafka"
+[kubecpl]: https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html "Amazon EKS control plane logging"
+[lambda]: https://aws.amazon.com/lambda/ "AWS Lambda"
+[lightsail]: https://aws.amazon.com/lightsail/ "Amazon Lightsail"
+[otel]: https://opentelemetry.io/ "OpenTelemetry"
+[promex]: https://prometheus.io/docs/instrumenting/exporters/ "Prometheus exporters and integrations"
+[rdsmon]: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.LoggingAndMonitoring.html "Logging and monitoring in Amazon RDS"
+[s3]: https://aws.amazon.com/s3/ "Amazon S3"
+[s3mon]: https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-incident-response.html "Logging and monitoring in Amazon S3"
+[sqstrace]: https://docs.aws.amazon.com/xray/latest/devguide/xray-services-sqs.html "Amazon SQS and AWS X-Ray"
+[vpcfl]: https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html "VPC Flow Logs"
+[xray]: https://aws.amazon.com/xray/ "AWS X-Ray"
