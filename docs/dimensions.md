@@ -7,6 +7,9 @@ for a given workload, spanning developer-related aspects such as the programming
 language used as well as operational topics, for example the runtime environment
 like containers or Lambda functions.
 
+![o11y space](images/o11y-space.png)
+
+
 !!! question "What is a signal?"
     When we say signal here we mean any kinds of o11y data and metadata points,
     including log entries, metrics, and traces. Unless we want to or have to be
@@ -33,11 +36,13 @@ So, how do the signals arrive in the destinations? Glad you asked, it's …
 
 ## Telemetry
 
-How the signals are collected and routed. [Learn more …](telemetry.md)
-
-The signals can come from two sources: either your application source code, 
-see [language](#language) section, or from stuff your app depends on, as discussed
+How the signals are collected and routed. The signals can come from two sources:
+either your application source code, see [language](#language) section, or 
+from stuff your app depends on, such as state managed in datastores or databases
+as well as infrastructure like VPCs, as discussed
 in [infra & persistent data](#infra-persistent-data).
+
+[Learn more about telemetry …](../telemetry)
 
 ## Language
 

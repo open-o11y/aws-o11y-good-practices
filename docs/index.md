@@ -3,15 +3,22 @@
 We are covering recipes for observability (o11y) solutions at AWS on this site.
 This includes managed services such as [Amazon Managed Service for Prometheus][amp]
 (AMP), libraries/SDKs and agents, for example as provided by [OpenTelemetry][otel]
-or [FluentBit][fluentbit]. We want to address the needs of both developers and
+or [Fluent Bit][fluentbit]. We want to address the needs of both developers and
 infrastructure folks.
 
 The way we think about this space is as follows:
-
-![o11y space](images/o11y-space.png)
-
-The o11y space as shown above has [six dimensions][dimensions] you can combine to arrive at
+The o11y space as shown above has [six dimensions][dimensions/] you can combine to arrive at
 a specifc solution.
+
+| dimension | examples |
+------------|-----------
+| analytics | [AMP][amp] AMG ES CW X-Ray S3 Jaeger |
+| telemetry | ADOT Fluent Bit CW agent X-Ray agent |
+| languages | Java Python .NET JavaScript Go Rust |
+| infra & persistent data | VPC flow logs Prometheus exporters Docker logs RDS
+traces |
+| compute unit | Batch ECS EKS Beanstalk Lambda|
+| compute engine | Fargate EC2 Lightsail |
 
 For example, you might be looking for a solution to:
 
@@ -37,6 +44,9 @@ to start. Try different paths and compare the pros and cons of certain recipes.
     - **By Language** covering languages
     - **By Destination** covering telemetry and analytics
 
+[Learn more about dimensions …](dimensions/)
+
+
 ## How to use
 
 You can either use the top navigation menu to browse to a specific index page,
@@ -52,7 +62,7 @@ Alternatively, you can search the site pressing `/` or the `s` key:
 Raise issues or send in pull requests against the repo.
 
 
-[amp]: https://aws.amazon.com/prometheus/
+[amp]: https://aws.amazon.com/prometheus/ "Amazon Managed Service for Prometheus"
 [otel]: https://opentelemetry.io/
 [fluentbit]: https://fluentbit.io/
 [dimensions]: dimensions.md
