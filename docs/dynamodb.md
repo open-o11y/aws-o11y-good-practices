@@ -9,6 +9,6 @@
 
 ## Alerts
 
-## Troubleshooting
+## Triage
 [EXTERNAL] [Troubleshooting performance bottleneck in DynamoDB](https://observability.workshop.aws/en/scaleup.html)
 
