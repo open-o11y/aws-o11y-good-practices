@@ -26,7 +26,6 @@ the ones provided by AWS via an API.
 Where signals shoud go, optional filtering and aggregation.
 
 
-
 ## Destinations
 
 Where signals end up, for consumption. 
