@@ -14,7 +14,6 @@
 
 ### Traces
 
-
 ## Fargate
 
 ### Logs
@@ -23,5 +22,7 @@
 
 ### Metrics
 
+
 ## Workshops
 [EXTERNAL] [Complete ECS Examples and Demos](https://www.ecsworkshop.com/)
+[EXTERNAL] [AWS Observabilitys Tools and Demos](https://observability.workshop.aws/en/)
