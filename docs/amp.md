@@ -9,4 +9,4 @@
 - [EXTERNAL] [Set up cross-region metrics collection for Amazon Managed Service for Prometheus workspaces](https://aws.amazon.com/blogs/opensource/set-up-cross-region-metrics-collection-for-amazon-managed-service-for-prometheus-workspaces/)
 
 # Workshops
-[EXTERNAL] [AWS Observabilitys Tools and Demos](https://observability.workshop.aws/en/)
+- [EXTERNAL] [AWS Observabilitys Tools and Demos](https://observability.workshop.aws/en/)
