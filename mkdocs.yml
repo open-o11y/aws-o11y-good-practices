@@ -17,6 +17,9 @@ nav:
   - Java: java.md
   - Python: python.md
   - Node.js: nodejs.md
+- 'By Database':
+  - RDS: rds.md
+  - DynamoDB: dynamodb.md
 - 'By Destination':
   - CloudWatch: cw.md
   - AMP: amp.md

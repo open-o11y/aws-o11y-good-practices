@@ -15,6 +15,7 @@ The way we think about the o11y space is as follows: we decompose it into
 |           | [AES][aes] &middot; [S3][s3] &middot; [Kafka][kafka] |
 | telemetry | [ADOT][adot] &middot; [Fluent Bit][fluentbit] &middot; CW agent &middot; X-Ray agent |
 | languages | Java &middot; Python &middot; .NET &middot; JavaScript &middot; Go &middot; Rust |
+| databases | RDS &middot; Dynamo DB &middot |
 | infra & data | [VPC flow logs][vpcfl] &middot; [EKS CP][kubecpl] &middot;  [exporters][promex]  |
 |                         | [S3 mon][s3mon] &middot; [RDS mon][rdsmon] &middot; [SQS tracing][sqstrace] |
 | compute unit | [Batch][batch] &middot; [ECS][ecs] &middot; [EKS][eks] &middot; [AEB][beans] &middot; [Lambda][lambda] |
@@ -42,6 +43,7 @@ catagories:
 - **By Compute**: covering compute engines and units
 - **By Infra & Data**: covering infrastructure and datastores
 - **By Language**: covering languages
+- **By Databases**: covering databases
 - **By Destination**: covering telemetry and analytics
 
 [Learn more about dimensions …](dimensions/)
@@ -69,6 +71,7 @@ Raise issues or send in pull requests against the repo.
 [beans]: https://aws.amazon.com/elasticbeanstalk/ "AWS Elastic Beanstalk"
 [cw]: https://aws.amazon.com/cloudwatch/ "Amazon CloudWatch"
 [dimensions]: ../dimensions
+[databases]: https://aws.amazon.com/products/databases "Amazon Databases"
 [ec2]: https://aws.amazon.com/ec2/ "Amazon EC2"
 [ecs]: https://aws.amazon.com/ecs/ "Amazon Elastic Container Service"
 [eks]: https://aws.amazon.com/eks/ "Amazon Elastic Kubernetes Service"
