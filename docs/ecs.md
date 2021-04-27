@@ -21,8 +21,3 @@
 - [EXTERNAL] [Sample logging architectures for FireLens on Amazon ECS and AWS Fargate using Fluent Bit](https://github.com/aws-samples/amazon-ecs-firelens-examples#fluent-bit-examples)
 
 ### Metrics
-
-
-## Workshops
-- [EXTERNAL] [Complete ECS Examples and Demos](https://www.ecsworkshop.com/)
-- [EXTERNAL] [AWS Observabilitys Tools and Demos](https://observability.workshop.aws/en/)

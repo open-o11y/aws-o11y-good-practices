@@ -7,6 +7,3 @@
 - [EXTERNAL] [Metrics collection from Amazon ECS using Amazon Managed Service for Prometheus](https://aws.amazon.com/blogs/opensource/metrics-collection-from-amazon-ecs-using-amazon-managed-service-for-prometheus/) 
 - [EXTERNAL] [Configuring Grafana Cloud Agent for Amazon Managed Service for Prometheus](https://aws.amazon.com/blogs/opensource/configuring-grafana-cloud-agent-for-amazon-managed-service-for-prometheus/)
 - [EXTERNAL] [Set up cross-region metrics collection for Amazon Managed Service for Prometheus workspaces](https://aws.amazon.com/blogs/opensource/set-up-cross-region-metrics-collection-for-amazon-managed-service-for-prometheus-workspaces/)
-
-# Workshops
-- [EXTERNAL] [AWS Observabilitys Tools and Demos](https://observability.workshop.aws/en/)
