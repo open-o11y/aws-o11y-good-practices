@@ -11,8 +11,10 @@ nav:
   - ECS: ecs.md
   - Lambda: lambda.md
 - 'By Infra & Data':
-  - infra.md
-  - data.md
+  - Infra: infra.md
+  - Data:
+     - RDS: rds.md
+     - DynamoDB: dynamodb.md
 - 'By Language':
   - Java: java.md
   - Python: python.md
@@ -22,6 +24,11 @@ nav:
   - AMP: amp.md
   - AMG: amg.md
   - Datadog: dd.md
+- 'Tasks':
+  - 'Anomaly Detection': anomaly-detection.md
+  - 'Alerting': alerting.md
+  - 'Troubleshooting': troubleshooting.md
+  - 'Workshops': workshops.md
 theme:
   name: 'material'
   features:

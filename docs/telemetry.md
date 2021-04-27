@@ -31,7 +31,6 @@ shoud go, optionally supporting filtering and aggregation.
     different things, we will use them here interchangeably. Canonically, 
 	we will refer to those intermediary transport components as agents.
 
-
 ## Destinations
 
 Where signals end up, for consumption. No matter if you want to store signals
