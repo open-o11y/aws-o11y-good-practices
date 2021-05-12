@@ -24,14 +24,14 @@ The ADOT-AMP pipeline includes two OpenTelemetry Collector components specific t
 * You need to install the [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html) command in your environment.
 * You need to install [kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) in your environment. 
 
-### Setup an EKS cluster
+### Setup an Amazon Elastic Kubernetes Service (EKS) cluster
 
 For this recipe we require a EKS cluster to be available.
 You can either use an existing EKS cluster or create one using the following template [file](ec2-eks-metrics-go-adot-ampamg/cluster_config.yaml).
 
-This template will create a new cluster with [AWS fargate](https://aws.amazon.com/fargate/) enabled. 
+This template will create a new cluster with [AWS Fargate](https://aws.amazon.com/fargate/) enabled. 
 
-Edit the template file and set your region to one of the available regions for Amazon Managed Prometheus service:
+Edit the template file and set your region to one of the available regions for Amazon Managed Service for Prometheus:
 
 * us-east-1
 * us-east-2
@@ -43,16 +43,16 @@ Make sure to overwrite this region in your bash session for example:
 ```
 export AWS_DEFAULT_REGION=eu-west-1
 ```
-Other regions are currently unsupported for Amazon Managed Prometheus service.
+Other regions are currently unsupported for Amazon Managed Service for Prometheus.
 
 Create your cluster using the following command.
 ```
 eksctl create cluster -f cluster-config.yaml
 ```
 
-### Setup an ECR repository
+### Setup an Amazon Elastic Container Registry (ECR) repository
 
-Create an ECR repository for the sample application
+Create an ECR repository for the sample application.
 
 ```
 aws ecr create-repository \
@@ -61,7 +61,7 @@ aws ecr create-repository \
     --region eu-west-1
 ```
 
-### Setup Amazon Managed Service for Prometheus (AMP) 
+### Setup Amazon Managed Service for Amazon Managed Service for Prometheus (AMP) 
 
 #### Create Amazon Managed Service for Prometheus workspace
 
@@ -80,7 +80,7 @@ aws amp list-workspaces
 
 #### Setup IAM role permissions for scraping
 
-1. Create the IAM role for the service account by following the steps in [Set up service roles for the ingestion of metrics from Amazon EKS clusters](https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa1.html#set-up-irsa-ingest). The ADOT Collector will use this role when it scrapes and exports metrics
+1. Create the IAM role for the service account by following the steps in [Set up service roles for the ingestion of metrics from Amazon EKS clusters](https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa1.html#set-up-irsa-ingest). The AWS Distro for Open Telemetry Collector will use this role when it scrapes and exports metrics
 
 2. Next, edit the trust policy. Open the IAM console at at https://console.aws.amazon.com/iam/
 
@@ -135,11 +135,11 @@ aws amp list-workspaces
 
 #### Download your template file
 
-Depending on if your EKS cluster uses Fargate or not we will use a different template file for the rest of this guide.
+Depending on if your EKS cluster uses AWS Fargate or not we will use a different template file for the rest of this guide.
 
 The following template file uses a deamonset for it's configuration (docs/recipes/ec2-eks-metrics-go-adot-ampamg)[prometheus-daemonset.yaml].
 
-Fargate does not support Deamonsets so you can use the following template (docs/recipes/ec2-eks-metrics-go-adot-ampamg)[prometheus-fargate.yaml] if your cluster was setup with Fargate.
+AWS Fargate does not support Deamonsets so you can use the following template (docs/recipes/ec2-eks-metrics-go-adot-ampamg)[prometheus-fargate.yaml] if your cluster was setup with AWS Fargate.
 
 
 #### Edit your template file
@@ -150,9 +150,9 @@ Use the following steps to edit the downloaded file for your environment:
 
 1\. Replace **<REGION\>** with your current Region. 
 
-2\. Replace **<YOUR_ENDPOINT>**  with your prometheus workspace endpoint URL.
+2\. Replace **<YOUR_ENDPOINT>**  with your Amazon Managed Service for Prometheus workspace endpoint URL.
 
-Get your prometheus endpoint url by executing the following query:
+Get your Amazon Managed Service for Prometheus endpoint url by executing the following query:
 ```
 $aws amp describe-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text` --query 'workspace.prometheusEndpoint'
 ```
@@ -183,11 +183,11 @@ You can verify that the ADOT Collector has started with this command:
 $ kubectl get pods -n adot-col
 ```
 
-### Setup Amazon managed Grafana
+### Setup Amazon Managed Service for Grafana
 
 [Amazon Managed Service for Grafana – Getting Started](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/)
 
-Setup a new AMG manged workspace using the Getting Started guide above.
+Setup a new Amazon Managed Service for Grafana workspace using the Getting Started guide above.
 
 Make sure to add "Amazon Managed Service for Prometheus" as a datasource.
 
@@ -277,7 +277,7 @@ $awscurl --service="aps" --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/quer
 {"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"adot_test_gauge0"},"value":[1606512592.493,"16.87214000011479"]}]}}
 ```
 
-### Create a grafana dashboard
+### Create a Grafana dashboard in Amazon Managed Service for Grafana
 
 [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html)
 
@@ -304,4 +304,4 @@ $aws amp delete-workspace --workspace-id `aws amp list-workspaces --alias promet
 $aws delete-role --role-name amp-iamproxy-ingest-role
 ```
 
-4. Remove the Amazon managed graphana workspace by removing it from the console. 
+4. Remove the Amazon Managed Service for Grafana workspace by removing it from the console. 
