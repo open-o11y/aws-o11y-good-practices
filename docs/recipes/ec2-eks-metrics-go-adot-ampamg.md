@@ -17,6 +17,13 @@ The ADOT-AMP pipeline includes two OpenTelemetry Collector components specific t
 
 [source](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter)
 
+
+### Prerequisites
+
+* The AWS CLI is [installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) in your environment.
+* You need to install the [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html) command in your environment.
+* You need to install [kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) in your environment. 
+
 ### Setup an EKS cluster
 
 For this recipe we require a EKS cluster to be available.
@@ -37,8 +44,6 @@ Make sure to overwrite this region in your bash session for example:
 export AWS_DEFAULT_REGION=eu-west-1
 ```
 Other regions are currently unsupported for Amazon Managed Prometheus service.
-
-Make sure you have installed the [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html) command in your environment.
 
 Create your cluster using the following command.
 ```
@@ -161,8 +166,6 @@ aws sts get-caller-identity --query Account --output text
 <br/>
 
 #### Deploy the template to your cluster
-
-Make sure you have [installed](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) and configured the kubectl command.
 
 ```
 $ kubectl apply -f prometheus-fargate.yaml
