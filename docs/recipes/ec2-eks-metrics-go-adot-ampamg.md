@@ -3,15 +3,15 @@
 In this recipe we show you how to instrument a Go application and
 use [AWS Distro for OpenTelemetry (ADOT)](https://aws.amazon.com/otel) to ingest metrics into
 [Amazon Managed Service for Prometheus (AMP)](https://aws.amazon.com/prometheus/) .
-Then we're using [Amazon Managed Service for Grafana AMG](https://aws.amazon.com/grafana/) to visualize the metrics.
+Then we're using [Amazon Managed Service for Grafana (AMG)](https://aws.amazon.com/grafana/) to visualize the metrics.
 
-We will be setting up an [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/) repository to support this recipe.
+We will be setting up an [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/) repository to demonstrate a complete scenario.
 
 ## Infrastructure
 
 ### Architecture
 
-The ADOT-AMP pipeline enables us to use the ADOT Collector to scrape a Prometheus-instrumented application, and send the scraped metrics to AWS Managed Service for Prometheus (AMP). 
+The ADOT-AMP pipeline enables us to use the ADOT Collector to scrape a Prometheus-instrumented application, and send the scraped metrics to AMP. 
 
 ![Architecture](https://aws-otel.github.io/static/Prometheus_Pipeline-07344e5466b05299cff41d09a603e479.png)
 
@@ -29,7 +29,7 @@ The ADOT-AMP pipeline includes two OpenTelemetry Collector components specific t
 ### Setup an EKS cluster
 
 For this recipe we require a EKS cluster to be available.
-You can either use an existing EKS cluster or create one using the following template [cluster_config.yaml](ec2-eks-metrics-go-adot-ampamg/cluster_config.yaml).
+You can either use an existing EKS cluster or create one using [cluster_config.yaml](ec2-eks-metrics-go-adot-ampamg/cluster_config.yaml).
 
 This template will create a new cluster with [AWS Fargate](https://aws.amazon.com/fargate/) enabled. 
 
@@ -77,7 +77,7 @@ Verify the workspace is created using:
 ```
 aws amp list-workspaces
 ```
-[AMP: Getting started](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-getting-started.html)
+For more details check out the [AMP Getting started](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-getting-started.html) guide.
 
 #### Setup IAM role permissions for scraping
 
@@ -127,7 +127,7 @@ aws amp list-workspaces
     ]
 }
 ```
-[Set up metrics ingestion using AWS Distro for Open Telemetry](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-ingest-metrics-OpenTelemetry.html)
+[Reference: Set up metrics ingestion using AWS Distro for Open Telemetry](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-ingest-metrics-OpenTelemetry.html)
 
 ### Setup ADOT Collector 
 
@@ -152,7 +152,9 @@ Use the following steps to edit the downloaded file for your environment:
 
 Get your AMP endpoint url by executing the following query:
 ```
-$aws amp describe-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text` --query 'workspace.prometheusEndpoint'
+$aws amp describe-workspace \ 
+    --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text` \
+    --query 'workspace.prometheusEndpoint'
 ```
 
 3\. Finally replace your **<YOUR_ACCOUNT_ID\>**  with your current account ID.
@@ -174,14 +176,13 @@ In case you used the deamonset template use the following command
 $ kubectl apply -f prometheus-daemonset.yaml
 ```
 
-
 You can verify that the ADOT Collector has started with this command:
 
 ```
 $ kubectl get pods -n adot-col
 ```
 
-[AWS Distro for OpenTelemetry (ADOT) Collector Setup](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter/eks#aws-distro-for-opentelemetry-adot-collector-setup)
+For more information check out the [AWS Distro for OpenTelemetry (ADOT) Collector Setup](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter/eks#aws-distro-for-opentelemetry-adot-collector-setup)
 
 ### Setup AMG
 
@@ -200,6 +201,8 @@ The following sample application will be used in this guide:
 
 [Sample App Github](https://github.com/aws-observability/aws-otel-community/tree/master/sample-apps/prometheus)
 
+
+### Build
 Clone the following Git repository
 ```
 $ git clone git@github.com:aws-observability/aws-otel-community.git
@@ -211,8 +214,8 @@ $ cd ./aws-otel-community/sample-apps/prometheus
 $ docker build . -t prometheus-sample-app:latest
 ```
 
+### Push
 Authenticate to your default registry:
-
 ```
 aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
 ```
@@ -223,7 +226,8 @@ docker tag prometheus-sample-app:latest <aws_account_id>.dkr.ecr.eu-west-1.amazo
 docker push <aws_account_id>.dkr.ecr.eu-west-1.amazonaws.com/prometheus-sample-app:latest
 ```
 
-Edit ec2-eks-metrics-go-adot-ampamg.md to contain your ECR image path.
+### Deploy
+Edit prometheus-sample-app.yaml to contain your ECR image path.
 
 Deploy the sample app to your cluster:
 ```
@@ -278,8 +282,9 @@ To test whether AMP received the metrics, use awscurl. This tool enables you to 
 In the following command, and AMP_ENDPOINT with the information for your AMP workspace. 
 
 ```
-$awscurl --service="aps" --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/query?query=adot_test_gauge0"
-{"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"adot_test_gauge0"},"value":[1606512592.493,"16.87214000011479"]}]}}
+$awscurl --service="aps" \ 
+    --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/query?query=adot_test_gauge0" \
+        {"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"adot_test_gauge0"},"value":[1606512592.493,"16.87214000011479"]}]}}
 ```
 
 ### Create a Grafana dashboard in AMG
@@ -288,6 +293,9 @@ $awscurl --service="aps" --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/quer
 
 [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/)
 
+@placeholder image
+
+![placeholder-image](https://d1.awsstatic.com/products/grafana/amg-console-1.a9bcc3ab4dc86a378eb808851f54cee8a34cb300.png)
 
 ## Cleanup
 
