@@ -5,7 +5,7 @@ use [AWS Distro for OpenTelemetry (ADOT)](https://aws.amazon.com/otel) to ingest
 [Amazon Managed Service for Prometheus (AMP)](https://aws.amazon.com/prometheus/) .
 Then we're using [Amazon Managed Service for Grafana AMG](https://aws.amazon.com/grafana/) to visualize the metrics.
 
-We will be setting up an Amazon Elastic Kubernetes Service (EKS) cluster and Amazon Elastic Container Registry (ECR) repository to support this recipe.
+We will be setting up an [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/) repository to support this recipe.
 
 ## Infrastructure
 
@@ -135,9 +135,9 @@ aws amp list-workspaces
 
 Depending on if your EKS cluster uses AWS Fargate or not we will use a different template file for the rest of this guide.
 
-The following template file uses a deamonset for it's configuration (docs/recipes/ec2-eks-metrics-go-adot-ampamg)[prometheus-daemonset.yaml].
+The following template file uses a deamonset for it's configuration [prometheus-daemonset.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-daemonset.yaml).
 
-AWS Fargate does not support deamonsets so you can use the following template (docs/recipes/ec2-eks-metrics-go-adot-ampamg)[prometheus-fargate.yaml] if your cluster was setup with AWS Fargate.
+AWS Fargate does not support deamonsets so you can use the following template [prometheus-fargate.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml), if your cluster was setup with AWS Fargate.
 
 
 #### Edit your template file
@@ -148,14 +148,14 @@ Use the following steps to edit the downloaded file for your environment:
 
 1\. Replace **<REGION\>** with your current Region. 
 
-2\. Replace **<YOUR_ENDPOINT>**  with your AMP workspace endpoint URL.
+2\. Replace **<YOUR_ENDPOINT\>**  with your AMP workspace endpoint URL.
 
 Get your AMP endpoint url by executing the following query:
 ```
 $aws amp describe-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text` --query 'workspace.prometheusEndpoint'
 ```
 
-3\. Finally replace your <YOUR_ACCOUNT_ID>  with your current account ID.
+3\. Finally replace your **<YOUR_ACCOUNT_ID\>**  with your current account ID.
 
 The following command will return the account ID for the current session:
 ```
@@ -242,9 +242,10 @@ kubectl get pods -n adot-col
 ```
 
 You should be able to see a adot-collector pod in the running state:
-``
+```
 NAME                              READY   STATUS    RESTARTS   AGE
 adot-collector-5f7448f6f6-cj7j8   1/1     Running   0          1h
+```
 
 Note down the name of this pod. Our example template is already integrated with the logging exporter. Enter the following command:
 
@@ -291,20 +292,15 @@ $awscurl --service="aps" --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/quer
 ## Cleanup
 
 1. Remove the cluster
-
 ```
 $eksctl delete cluster --name amp-eks-fargate
 ```
-
 2. Remove the AMP workspace
-
 ```
 $aws amp delete-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text`
 ```
-
 3. Remove the amp-iamproxy-ingest-role IAM role 
 ```
 $aws delete-role --role-name amp-iamproxy-ingest-role
 ```
-
 4. Remove the AMG workspace by removing it from the console. 
