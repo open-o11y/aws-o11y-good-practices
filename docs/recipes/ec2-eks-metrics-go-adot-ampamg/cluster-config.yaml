@@ -1,0 +1,17 @@
+
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: amp-eks-fargate
+  region: eu-west-1
+  version: '1.18'
+iam:
+  withOIDC: true
+fargateProfiles:
+  - name: defaultfp
+    selectors:
+      - namespace: prometheus
+      - namespace: kube-system
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
