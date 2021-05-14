@@ -236,6 +236,7 @@ $ kubectl apply -f prometheus-sample-app.yaml
 
 ## End-to-end
 
+Now that you have the infrastructure and the application in place, we will test out the setup, sending metrics from the Go app running in EKS to AMP and visualize it in AMG.
 
 ### Verify your pipeline is working 
 
@@ -289,11 +290,10 @@ $awscurl --service="aps" \
 
 ### Create a Grafana dashboard in AMG
 
-[User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html)
+Use the following guides to create your first dashboard:
 
-[Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/)
-
-@placeholder image
+* [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html)
+* [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/)
 
 ![placeholder-image](https://d1.awsstatic.com/products/grafana/amg-console-1.a9bcc3ab4dc86a378eb808851f54cee8a34cb300.png)
 
