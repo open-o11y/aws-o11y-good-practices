@@ -214,6 +214,18 @@ cd ./aws-otel-community/sample-apps/prometheus
 docker build . -t prometheus-sample-app:latest
 ```
 
+If go mod fails in your environment due to a proxy.golang.or i/o timeout,
+you are able to bypass the go mod proxy by editing the Dockerfile.
+
+Change the following line in the Docker file:
+```
+RUN GO111MODULE=on go mod download
+```
+to:
+```
+RUN GOPROXY=direct GO111MODULE=on go mod download
+```
+
 ### Push
 Authenticate to your default registry:
 ```
