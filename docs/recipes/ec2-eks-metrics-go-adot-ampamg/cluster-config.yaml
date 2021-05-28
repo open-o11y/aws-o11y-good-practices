@@ -12,6 +12,7 @@ fargateProfiles:
     selectors:
       - namespace: prometheus
       - namespace: kube-system
+      - namespace: adot-col
 cloudWatch:
   clusterLogging:
     enableTypes: ["*"]
