@@ -81,7 +81,7 @@ For more details check out the [AMP Getting started](https://docs.aws.amazon.com
 
 #### Setup IAM role permissions for scraping
 
-1. Create the IAM role for the service account by following the steps in [Set up service roles for the ingestion of metrics from Amazon EKS clusters](https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa1.html#set-up-irsa-ingest). The AWS Distro for Open Telemetry Collector will use this role when it scrapes and exports metrics
+1. Create the IAM role for the service account by following the steps in [Set up service roles for the ingestion of metrics from Amazon EKS clusters](https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html#set-up-irsa-ingest). The AWS Distro for Open Telemetry Collector will use this role when it scrapes and exports metrics
 
 2. Next, edit the trust policy. Open the IAM console at at https://console.aws.amazon.com/iam/
 
