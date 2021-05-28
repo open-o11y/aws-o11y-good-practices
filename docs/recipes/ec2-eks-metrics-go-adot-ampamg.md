@@ -227,15 +227,21 @@ RUN GOPROXY=direct GO111MODULE=on go mod download
 ```
 
 ### Push
+Change the region variable to the region you selected in the beginning of this guide:
+```
+export REGION="eu-west-1"
+export ACCOUNTID=`aws sts get-caller-identity --query Account --output text`
+```
+
 Authenticate to your default registry:
 ```
-aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com"
 ```
 
 Push container to the ECR repository
 ```
-docker tag prometheus-sample-app:latest <aws_account_id>.dkr.ecr.eu-west-1.amazonaws.com/prometheus-sample-app:latest
-docker push <aws_account_id>.dkr.ecr.eu-west-1.amazonaws.com/prometheus-sample-app:latest
+docker tag prometheus-sample-app:latest "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:latest"
+docker push "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:latest"
 ```
 
 ### Deploy
