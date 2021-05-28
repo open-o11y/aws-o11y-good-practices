@@ -89,7 +89,7 @@ For more details check out the [AMP Getting started](https://docs.aws.amazon.com
 
 4. Choose the Trust relationships tab and choose Edit trust relationship.
 
-5. In the trust relationship policy JSON, replace aws-amp with adot-col and then choose Update Trust Policy. Your resulting trust policy should look like the following: 
+5. In the trust relationship policy JSON, replace prometheus or aws-amp with adot-col and then choose Update Trust Policy. Your resulting trust policy should look like the following: 
 ```
 {
   "Version": "2012-10-17",
