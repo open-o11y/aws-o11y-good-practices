@@ -13,6 +13,7 @@ fargateProfiles:
       - namespace: prometheus
       - namespace: kube-system
       - namespace: adot-col
+      - namespace: aoc-prometheus-pipeline-demo
 cloudWatch:
   clusterLogging:
     enableTypes: ["*"]

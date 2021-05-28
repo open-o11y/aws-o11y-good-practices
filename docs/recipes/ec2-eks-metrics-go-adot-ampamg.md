@@ -133,11 +133,7 @@ For more details check out the [AMP Getting started](https://docs.aws.amazon.com
 
 #### Download your template file
 
-Depending on if your EKS cluster uses AWS Fargate or not we will use a different template file for the rest of this guide.
-
-The following template file uses a deamonset for it's configuration [prometheus-daemonset.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-daemonset.yaml).
-
-AWS Fargate does not support deamonsets so you can use the following template [prometheus-fargate.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml), if your cluster was setup with AWS Fargate.
+Download the following template [prometheus-fargate.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml) and edit this file with the parameters described in the next steps.
 
 
 #### Edit your template file
@@ -169,11 +165,6 @@ aws sts get-caller-identity --query Account --output text
 
 ```
 kubectl apply -f prometheus-fargate.yaml
-```
-
-In case you used the deamonset template use the following command
-```
-kubectl apply -f prometheus-daemonset.yaml
 ```
 
 You can verify that the ADOT Collector has started with this command:
