@@ -152,7 +152,7 @@ Use the following steps to edit the downloaded file for your environment:
 
 Get your AMP endpoint url by executing the following query:
 ```
-$aws amp describe-workspace \ 
+aws amp describe-workspace \ 
     --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text` \
     --query 'workspace.prometheusEndpoint'
 ```
@@ -168,18 +168,18 @@ aws sts get-caller-identity --query Account --output text
 #### Deploy the template to your cluster
 
 ```
-$ kubectl apply -f prometheus-fargate.yaml
+kubectl apply -f prometheus-fargate.yaml
 ```
 
 In case you used the deamonset template use the following command
 ```
-$ kubectl apply -f prometheus-daemonset.yaml
+kubectl apply -f prometheus-daemonset.yaml
 ```
 
 You can verify that the ADOT Collector has started with this command:
 
 ```
-$ kubectl get pods -n adot-col
+kubectl get pods -n adot-col
 ```
 
 For more information check out the [AWS Distro for OpenTelemetry (ADOT) Collector Setup](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter/eks#aws-distro-for-opentelemetry-adot-collector-setup)
@@ -205,13 +205,13 @@ The following sample application will be used in this guide:
 ### Build
 Clone the following Git repository
 ```
-$ git clone git@github.com:aws-observability/aws-otel-community.git
+git clone git@github.com:aws-observability/aws-otel-community.git
 ```
 
 Build the container
 ```
-$ cd ./aws-otel-community/sample-apps/prometheus
-$ docker build . -t prometheus-sample-app:latest
+cd ./aws-otel-community/sample-apps/prometheus
+docker build . -t prometheus-sample-app:latest
 ```
 
 ### Push
@@ -231,7 +231,7 @@ Edit prometheus-sample-app.yaml to contain your ECR image path.
 
 Deploy the sample app to your cluster:
 ```
-$ kubectl apply -f prometheus-sample-app.yaml
+kubectl apply -f prometheus-sample-app.yaml
 ```
 
 ## End-to-end
@@ -283,7 +283,7 @@ To test whether AMP received the metrics, use awscurl. This tool enables you to 
 In the following command, and AMP_ENDPOINT with the information for your AMP workspace. 
 
 ```
-$awscurl --service="aps" \ 
+awscurl --service="aps" \ 
     --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/query?query=adot_test_gauge0" \
         {"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"adot_test_gauge0"},"value":[1606512592.493,"16.87214000011479"]}]}}
 ```
@@ -301,14 +301,14 @@ Use the following guides to create your first dashboard:
 
 1. Remove the cluster
 ```
-$eksctl delete cluster --name amp-eks-fargate
+eksctl delete cluster --name amp-eks-fargate
 ```
 2. Remove the AMP workspace
 ```
-$aws amp delete-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text`
+aws amp delete-workspace --workspace-id `aws amp list-workspaces --alias prometheus-sample-app --query 'workspaces[0].workspaceId' --output text`
 ```
 3. Remove the amp-iamproxy-ingest-role IAM role 
 ```
-$aws delete-role --role-name amp-iamproxy-ingest-role
+aws delete-role --role-name amp-iamproxy-ingest-role
 ```
 4. Remove the AMG workspace by removing it from the console. 
