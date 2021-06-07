@@ -1,23 +1,29 @@
-# Using AWS Distro for OpenTelemetry in EKS to ingest metrics into AMP
+# Using AWS Distro for OpenTelemetry in EKS to ingest metrics into Amazon Managed Service for Prometheus
 
-In this recipe we show you how to instrument a Go application and
+In this recipe we show you how to instrument a [sample Go application](https://github.com/aws-observability/aws-otel-community/tree/master/sample-apps/prometheus) and
 use [AWS Distro for OpenTelemetry (ADOT)](https://aws.amazon.com/otel) to ingest metrics into
 [Amazon Managed Service for Prometheus (AMP)](https://aws.amazon.com/prometheus/) .
 Then we're using [Amazon Managed Service for Grafana (AMG)](https://aws.amazon.com/grafana/) to visualize the metrics.
 
 We will be setting up an [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and [Amazon Elastic Container Registry (ECR)](https://aws.amazon.com/ecr/) repository to demonstrate a complete scenario.
 
+!!! note
+    This guide will take approximately 1 hour to complete.
+
 ## Infrastructure
+In the following section we will be setting up the infrastructure for this recipe. 
 
 ### Architecture
 
-The ADOT-AMP pipeline enables us to use the ADOT Collector to scrape a Prometheus-instrumented application, and send the scraped metrics to AMP. 
+The ADOT-AMP pipeline enables us to use the [ADOT Collector](https://github.com/aws-observability/aws-otel-collector) to scrape a Prometheus-instrumented application, and send the scraped metrics to AMP. 
 
 ![Architecture](https://aws-otel.github.io/static/Prometheus_Pipeline-07344e5466b05299cff41d09a603e479.png)
 
-The ADOT-AMP pipeline includes two OpenTelemetry Collector components specific to Prometheus — the Prometheus Receiver and the AWS Prometheus Remote Write Exporter. 
+The ADOT Collector includes two AWS OpenTelemetry Collector components specific to Prometheus — the Prometheus Receiver and the AWS Prometheus Remote Write Exporter. 
 
-[Getting Started with Prometheus Remote Write Exporter for AMP](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter)
+!!! info 
+    For more information on Prometheus Remote Write Exporter check out:
+    [Getting Started with Prometheus Remote Write Exporter for AMP](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter)
 
 
 ### Prerequisites
@@ -25,13 +31,14 @@ The ADOT-AMP pipeline includes two OpenTelemetry Collector components specific t
 * The AWS CLI is [installed](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html) in your environment.
 * You need to install the [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html) command in your environment.
 * You need to install [kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) in your environment. 
+* You have [docker](https://docs.docker.com/get-docker/) installed into your environment.
 
 ### Setup an EKS cluster
 
-For this recipe we require a EKS cluster to be available.
-You can either use an existing EKS cluster or create one using [cluster_config.yaml](ec2-eks-metrics-go-adot-ampamg/cluster_config.yaml).
+Our demo application in this recipe will be running on top of EKS. 
+You can either use an existing EKS cluster or create one using [cluster_config.yaml](./ec2-eks-metrics-go-adot-ampamg/cluster-config.yaml).
 
-This template will create a new cluster with [AWS Fargate](https://aws.amazon.com/fargate/) enabled. 
+This template will create a new cluster with EKS on [AWS Fargate](https://aws.amazon.com/fargate/). 
 
 Edit the template file and set your region to one of the available regions for AMP:
 
@@ -41,11 +48,10 @@ Edit the template file and set your region to one of the available regions for A
 * `eu-central-1`
 * `eu-west-1`
 
-Make sure to overwrite this region in your bash session for example:
+Make sure to overwrite this region in your session, for example in bash:
 ```
 export AWS_DEFAULT_REGION=eu-west-1
 ```
-Other regions are currently unsupported for AMP.
 
 Create your cluster using the following command.
 ```
@@ -54,7 +60,8 @@ eksctl create cluster -f cluster-config.yaml
 
 ### Setup an ECR repository
 
-Create an ECR repository for the sample application.
+In order to deploy our application to EKS we need a container registry. 
+You can use the following command to create a new ECR registry in your account. 
 
 ```
 aws ecr create-repository \
@@ -65,86 +72,32 @@ aws ecr create-repository \
 
 ### Setup AMP 
 
-#### Create AMP workspace
 
 create a workspace using the AWS CLI 
 ```
 aws amp create-workspace --alias prometheus-sample-app
 ```
-Take note of the returned workspace-id
 
 Verify the workspace is created using:
 ```
 aws amp list-workspaces
 ```
-For more details check out the [AMP Getting started](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-getting-started.html) guide.
 
-#### Setup IAM role permissions for scraping
+!!! info
+    For more details check out the [AMP Getting started](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-getting-started.html) guide.
 
-1. Create the IAM role for the service account by following the steps in [Set up service roles for the ingestion of metrics from Amazon EKS clusters](https://docs.aws.amazon.com/prometheus/latest/userguide/set-up-irsa.html#set-up-irsa-ingest). The AWS Distro for Open Telemetry Collector will use this role when it scrapes and exports metrics
-
-2. Next, edit the trust policy. Open the IAM console at at https://console.aws.amazon.com/iam/
-
-3. In the left navigation pane choose Roles and find the amp-iamproxy-ingest-role that you created in step 1.
-
-4. Choose the Trust relationships tab and choose Edit trust relationship.
-
-5. In the trust relationship policy JSON, replace prometheus or aws-amp with adot-col and then choose Update Trust Policy. Your resulting trust policy should look like the following: 
-```
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "arn:aws:iam::account-id:oidc-provider/oidc.eks.aws_region.amazonaws.com/id/openid"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "oidc.eks.aws_region.amazonaws.com/id/openid:sub": "system:serviceaccount:adot-col:amp-iamproxy-ingest-service-account"
-        }
-      }
-    }
-  ]
-}
-```
-6. Choose the Permissions tab and make sure that the following permissions policy is attached to the role. 
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "aps:RemoteWrite",
-                "aps:GetSeries",
-                "aps:GetLabels",
-                "aps:GetMetricMetadata"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-```
-[Reference: Set up metrics ingestion using AWS Distro for Open Telemetry](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-ingest-metrics-OpenTelemetry.html)
 
 ### Setup ADOT Collector 
 
-#### Download your template file
-
-Download the following template [prometheus-fargate.yaml](ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml) and edit this file with the parameters described in the next steps.
-
-
-#### Edit your template file
+Download the template file [prometheus-fargate.yaml](./ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml) and edit this file with the parameters described in the next steps.
 
 In this example, the ADOT Collector configuration uses an annotation (scrape=true) to tell which target endpoints to scrape. This allows the ADOT Collector to distinguish the sample app endpoint from kube-system endpoints in your cluster. You can remove this from the re-label configurations if you want to scrape a different sample app. 
 
 Use the following steps to edit the downloaded file for your environment:
 
-1\. Replace **<REGION\>** with your current Region. 
+1\. Replace `<REGION>` with your current Region. 
 
-2\. Replace **<YOUR_ENDPOINT\>**  with your AMP workspace endpoint URL.
+2\. Replace `<YOUR_ENDPOINT>`  with your AMP workspace endpoint URL.
 
 Get your AMP endpoint url by executing the following query:
 ```
@@ -153,27 +106,21 @@ aws amp describe-workspace \
     --query 'workspace.prometheusEndpoint'
 ```
 
-3\. Finally replace your **<YOUR_ACCOUNT_ID\>**  with your current account ID.
+3\. Finally replace your `<YOUR_ACCOUNT_ID>`  with your current account ID.
 
 The following command will return the account ID for the current session:
 ```
 aws sts get-caller-identity --query Account --output text
 ```
-<br/>
 
-#### Deploy the template to your cluster
+After creating deployment file we can now apply this to our cluster by using the following command: 
 
 ```
 kubectl apply -f prometheus-fargate.yaml
 ```
 
-You can verify that the ADOT Collector has started with this command:
-
-```
-kubectl get pods -n adot-col
-```
-
-For more information check out the [AWS Distro for OpenTelemetry (ADOT) Collector Setup](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter/eks#aws-distro-for-opentelemetry-adot-collector-setup)
+!!! info
+    For more information check out the [AWS Distro for OpenTelemetry (ADOT) Collector Setup](https://aws-otel.github.io/docs/getting-started/prometheus-remote-write-exporter/eks#aws-distro-for-opentelemetry-adot-collector-setup)
 
 ### Setup AMG
 
@@ -188,10 +135,9 @@ Make sure to add "Amazon Managed Service for Prometheus" as a datasource during 
 
 ## Application
 
-The following sample application will be used in this guide:
+In this recipe we will be using a [sample application](https://github.com/aws-observability/aws-otel-community/tree/master/sample-apps/prometheus) from the AWS Observability repository.
 
-[Sample App Github](https://github.com/aws-observability/aws-otel-community/tree/master/sample-apps/prometheus)
-
+This Prometheus sample app generates all 4 Prometheus metric types (counter, gauge, histogram, summary) and exposes them at the /metrics endpoint.
 
 ### Build
 Clone the following Git repository
@@ -204,18 +150,18 @@ Build the container
 cd ./aws-otel-community/sample-apps/prometheus
 docker build . -t prometheus-sample-app:latest
 ```
+!!! note
+    If go mod fails in your environment due to a proxy.golang.or i/o timeout,
+    you are able to bypass the go mod proxy by editing the Dockerfile.
 
-If go mod fails in your environment due to a proxy.golang.or i/o timeout,
-you are able to bypass the go mod proxy by editing the Dockerfile.
-
-Change the following line in the Docker file:
-```
-RUN GO111MODULE=on go mod download
-```
-to:
-```
-RUN GOPROXY=direct GO111MODULE=on go mod download
-```
+    Change the following line in the Docker file:
+    ```
+    RUN GO111MODULE=on go mod download
+    ```
+    to:
+    ```
+    RUN GOPROXY=direct GO111MODULE=on go mod download
+    ```
 
 ### Push
 Change the region variable to the region you selected in the beginning of this guide:
@@ -249,7 +195,7 @@ Now that you have the infrastructure and the application in place, we will test 
 
 ### Verify your pipeline is working 
 
-Enter the following command to and not down the name of the collector pod:
+Enter the following command to and note down the name of the collector pod:
 
 ```
 kubectl get pods -n adot-col
@@ -261,10 +207,10 @@ NAME                              READY   STATUS    RESTARTS   AGE
 adot-collector-5f7448f6f6-cj7j8   1/1     Running   0          1h
 ```
 
-Note down the name of this pod. Our example template is already integrated with the logging exporter. Enter the following command:
+Our example template is already integrated with the logging exporter. Enter the following command:
 
 ```
-kubectl logs -n adot-col <name_of_your_adot_collector_pod>
+kubectl logs -n adot-col adot-collector
 ```
 
 Some of the scraped metrics from the sample app will look like the following example: 
@@ -289,11 +235,11 @@ Value: 0.000000
 
 To test whether AMP received the metrics, use awscurl. This tool enables you to send HTTP requests through the command line with AWS Sigv4 authentication, so you must have AWS credentials set up locally with the correct permissions to query from AMP For instructions on installing awscurl, see awscurl.
 
-In the following command, and AMP_ENDPOINT with the information for your AMP workspace. 
+In the following command, and replace AMP_ENDPOINT with the endpoint for your AMP workspace. 
 
 ```
 awscurl --service="aps" \ 
-    --region="AMP_REGION" "https://AMP_ENDPOINT/api/v1/query?query=adot_test_gauge0" \
+    --region="$REGION" "https://$AMP_ENDPOINT/api/v1/query?query=adot_test_gauge0" \
         {"status":"success","data":{"resultType":"vector","result":[{"metric":{"__name__":"adot_test_gauge0"},"value":[1606512592.493,"16.87214000011479"]}]}}
 ```
 
@@ -308,8 +254,9 @@ Use the following guides to create your first dashboard:
 
 ## Cleanup
 
-1. Remove the cluster
+1. Remove the resources and cluster
 ```
+kubectl delete all --all
 eksctl delete cluster --name amp-eks-fargate
 ```
 2. Remove the AMP workspace
