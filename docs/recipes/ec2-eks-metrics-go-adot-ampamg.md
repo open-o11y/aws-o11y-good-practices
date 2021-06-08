@@ -124,9 +124,7 @@ kubectl apply -f prometheus-fargate.yaml
 
 ### Setup AMG
 
-[Amazon Managed Service for Grafana – Getting Started](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/)
-
-Setup a new AMG workspace using the Getting Started guide above.
+Setup a new AMG workspace using the [Amazon Managed Service for Grafana – Getting Started](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/) guide.
 
 Make sure to add "Amazon Managed Service for Prometheus" as a datasource during creation.
 
