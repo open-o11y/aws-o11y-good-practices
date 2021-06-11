@@ -38,7 +38,7 @@ The ADOT Collector includes two AWS OpenTelemetry Collector components specific 
 Our demo application in this recipe will be running on top of EKS. 
 You can either use an existing EKS cluster or create one using [cluster_config.yaml](./ec2-eks-metrics-go-adot-ampamg/cluster-config.yaml).
 
-This template will create a new cluster with two EC2 `t2.large` nodes. 
+This template will create a new cluster with EKS on [AWS Fargate](https://aws.amazon.com/fargate/). 
 
 Edit the template file and set your region to one of the available regions for AMP:
 
@@ -89,7 +89,7 @@ aws amp list-workspaces
 
 ### Setup ADOT Collector 
 
-Download the template file [prometheus-deamonset.yaml](./ec2-eks-metrics-go-adot-ampamg/prometheus-deamonset.yaml) and edit this file with the parameters described in the next steps.
+Download the template file [prometheus-fargate.yaml](./ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml) and edit this file with the parameters described in the next steps.
 
 In this example, the ADOT Collector configuration uses an annotation `(scrape=true)` to tell which target endpoints to scrape. This allows the ADOT Collector to distinguish the sample app endpoint from kube-system endpoints in your cluster. You can remove this from the re-label configurations if you want to scrape a different sample app. 
 
@@ -116,7 +116,7 @@ aws sts get-caller-identity --query Account --output text
 After creating deployment file we can now apply this to our cluster by using the following command: 
 
 ```
-kubectl apply -f prometheus-deamonset.yaml
+kubectl apply -f prometheus-fargate.yaml
 ```
 
 !!! info
@@ -260,7 +260,7 @@ Use the following guides to create your first dashboard:
 1. Remove the resources and cluster
 ```
 kubectl delete all --all
-eksctl delete cluster --name amp-eks-ec2
+eksctl delete cluster --name amp-eks-fargate
 ```
 2. Remove the AMP workspace
 ```
