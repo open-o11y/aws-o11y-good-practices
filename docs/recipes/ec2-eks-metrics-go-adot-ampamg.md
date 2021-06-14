@@ -264,8 +264,15 @@ You can now create a dashboard in Grafana to visualise the data you collected in
 
 Check out the AMG [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html), to learn more about Grafana dashboards.
 
-You can also you the following 
-[Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/).
+* When creating a new dashboard, make sure it has a meaningful name.
+    * If you are creating a dashboard to play or experiment, then put the word TEST or TMP in the name.
+    * Consider including your name or initials in the dashboard name or as a tag so that people know who owns the dashboard.
+    * Remove temporary experiment dashboards when you are done with them.
+* If you create many related dashboards, think about how to cross-reference them for easy navigation. Refer to Best practices for managing dashboards for more information.
+* Avoid unnecessary dashboard refreshing to reduce the load on the network or backend. For example, if your data changes every hour, then you don’t need to set the dashboard refresh rate to 30 seconds.
+* Be careful with stacking graph data. The visualizations can be misleading, and hide important data. We recommend turning it off in most cases.
+
+You can check out [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/) for more information.
 
 ![placeholder-image](https://d1.awsstatic.com/products/grafana/amg-console-1.a9bcc3ab4dc86a378eb808851f54cee8a34cb300.png)
 
