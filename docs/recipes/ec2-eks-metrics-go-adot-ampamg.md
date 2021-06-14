@@ -183,7 +183,21 @@ docker push "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:late
 ### Deploy
 Edit `prometheus-sample-app.yaml` to contain your ECR image path.
 
--> show line here.
+Edit the deployment to reflect your image path. (example below)
+```
+apiVersion: apps/v1
+kind: Deployment
+...
+    spec:
+      containers:
+      - name: prometheus-sample-app
+        image: "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:latest" # change to your image
+        command: ["/bin/main", "-listen_address=0.0.0.0:8080", "-metric_count=10"]
+        ports:
+        - name: web
+          containerPort: 8080
+...
+```
 
 Deploy the sample app to your cluster:
 ```
@@ -246,12 +260,12 @@ awscurl --service="aps" \
 
 ### Create a Grafana dashboard in AMG
 
-Use the following guides to create your first dashboard:
+You can now create a dashboard in Grafana to visualise the data you collected in the test App.
 
-* [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html)
-* [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/)
+Check out the AMG [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html), to learn more about Grafana dashboards.
 
--> Put more content here.
+You can also you the following 
+[Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/).
 
 ![placeholder-image](https://d1.awsstatic.com/products/grafana/amg-console-1.a9bcc3ab4dc86a378eb808851f54cee8a34cb300.png)
 
