@@ -2,5 +2,7 @@
 
 This section contains recipes for anomaly detection.
 
-- [EXTERNAL] [Enabling Anomaly Detection for a CloudWatch Metric](https://observability.workshop.aws/en/anomalydetection.html)
+- [Enabling Anomaly Detection for a CloudWatch Metric][am-oow]
+
+[am-oow]: https://observability.workshop.aws/en/anomalydetection.html
 

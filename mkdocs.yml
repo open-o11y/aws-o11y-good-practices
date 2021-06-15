@@ -17,7 +17,7 @@ nav:
      - DynamoDB: dynamodb.md
 - 'By Language':
   - Java: java.md
-  - Python: python.md
+  # - Python: python.md
   - Node.js: nodejs.md
 - 'By Destination':
   - CloudWatch: cw.md
