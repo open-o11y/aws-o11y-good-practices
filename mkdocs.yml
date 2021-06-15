@@ -10,17 +10,17 @@ nav:
   - EKS: eks.md
   - ECS: ecs.md
   - Lambda: lambda.md
-- 'By Infra & Data':
+- 'By Infra & Databases':
   - Infra: infra.md
-  - Data:
+  - Databases:
      - RDS: rds.md
      - DynamoDB: dynamodb.md
+     - MSK: msk.md
 - 'By Language':
   - Java: java.md
-  # - Python: python.md
   - Node.js: nodejs.md
 - 'By Destination':
-  - CloudWatch: cw.md
+  - CW: cw.md
   - AMP: amp.md
   - AMG: amg.md
   - AES: aes.md
