@@ -11,11 +11,11 @@ The way we think about the o11y space is as follows: we decompose it into
 
 | **dimension** | **examples** |
 |---------------|--------------|
-| analytics | [AMP][amp] &middot; [AMG][amg] &middot; [CW][cw] &middot; [X-Ray][xray] &middot; [Jaeger][jaeger] |
-|           | [AES][aes] &middot; [S3][s3] &middot; [Kafka][kafka] |
-| telemetry | [ADOT][adot] &middot; [Fluent Bit][fluentbit] &middot; CW agent &middot; X-Ray agent |
-| languages | Java &middot; Python &middot; .NET &middot; JavaScript &middot; Go &middot; Rust |
-| infra & data | [VPC flow logs][vpcfl] &middot; [EKS CP][kubecpl] &middot;  [exporters][promex]  |
+| destinations  | [AMP][amp] &middot; [AMG][amg] &middot; [CW][cw] &middot; [X-Ray][xray] &middot; [Jaeger][jaeger] |
+|               | [AES][aes] &middot; [S3][s3] &middot; [Kafka][kafka] |
+| agents        | [ADOT][adot] &middot; [Fluent Bit][fluentbit] &middot; CW agent &middot; X-Ray agent |
+| languages     | Java &middot; Python &middot; .NET &middot; JavaScript &middot; Go &middot; Rust |
+| infra & databases  | [VPC flow logs][vpcfl] &middot; [EKS CP][kubecpl] &middot;  [exporters][promex]  |
 |                         | [S3 mon][s3mon] &middot; [SQS tracing][sqstrace] &middot; [RDS mon][rdsmon] &middot; [DynamoDB][dynamodb] |
 | compute unit | [Batch][batch] &middot; [ECS][ecs] &middot; [EKS][eks] &middot; [AEB][beans] &middot; [Lambda][lambda] |
 | compute engine | [Fargate][fargate] &middot; [EC2][ec2] &middot; [Lightsail][lightsail] |
@@ -26,10 +26,10 @@ For example, you might be looking for a solution to:
     I need a logging solution for a Python app I'm running on EKS on Fargate
     with the goal to store the logs in an S3 bucket for further consumption
 
-1. *Analytics*: S3 bucket for further consumption
-1. *Telemetry*: FluentBit
+1. *Destination*: S3 bucket for further consumption
+1. *Agent*: FluentBit
 1. *Language*: Python
-1. *Infra*: N/A
+1. *Infra & DB*: N/A
 1. *Compute unit*: Kubernetes (EKS)
 1. *Compute engine*: EC2
 
@@ -40,7 +40,7 @@ To simplify navigation, we're grouping the six dimension into the following
 catagories:
 
 - **By Compute**: covering compute engines and units
-- **By Infra & Data**: covering infrastructure and datastores
+- **By Infra & Data**: covering infrastructure and databases
 - **By Language**: covering languages
 - **By Destination**: covering telemetry and analytics
 - **Tasks**: covering anomaly detection, alerting, troubleshooting, and more

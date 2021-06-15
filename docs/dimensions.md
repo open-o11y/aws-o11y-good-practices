@@ -18,9 +18,9 @@ like containers or Lambda functions.
 
 Let's now have a look at each of the six dimensions one by one:
 
-## Analytics
+## Destinations
 
-Analytics is an umbrella term for all kinds of signal destinations including long term
+In this dimension we consider all kinds of signal destinations including long term
 storage and graphical interfaces that let you consume signals. As a developer,
 you want access to an UI or an API that allows you to discover, look up, and
 correlate signals to troubleshoot your service. In an infrastructure or platform
@@ -36,7 +36,7 @@ the signals into the destinations.
 
 So, how do the signals arrive in the destinations? Glad you asked, it's …
 
-## Telemetry
+## Agents
 
 How the signals are collected and routed to analytics. The signals can come 
 from two sources: either your application source code (see also the
@@ -44,9 +44,11 @@ from two sources: either your application source code (see also the
 such as state managed in datastores as well as infrastructure like VPCs (see
 also the [infra & data](#infra-data) section).
 
-[Learn more about telemetry …](../telemetry)
+Agents are part of the [telemetry](../telemetry) that you would use to collect
+and ingest signals. The other part are the instrumented applications and infra
+pieces like databases.
 
-## Language
+## Languages
 
 This dimension is concerned with the programming language you use for writing
 your service or application. Here, we're dealing with SDKs and libraries, such 
@@ -55,14 +57,14 @@ of [instrumentation][otelinst]. You want to make sure that an o11y solution
 supports your programming language of choice for a given signal type such as
 logs or metrics.
 
-## Infra & data
+## Infrastructure & databases
 
-In this dimension we consider ny sort of application-external dependencies, 
+With this dimension we mean any sort of application-external dependencies, 
 be it infrastructure like the VPC the service is running in or a datastore
 like RDS or DynamoDB or a queue like SQS. 
 
 !!! tip "Commonalities"
-    One thing all the sources in the "Infra & Data" dimension have
+    One thing all the sources in this dimension have
     in common is that they are located outside of your application (as well
     as the compute environment your app runs in) and with that you have to treat
     them as an opaque box.
