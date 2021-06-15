@@ -38,7 +38,7 @@ The ADOT Collector includes two AWS OpenTelemetry Collector components specific 
 Our demo application in this recipe will be running on top of EKS. 
 You can either use an existing EKS cluster or create one using [cluster_config.yaml](./ec2-eks-metrics-go-adot-ampamg/cluster-config.yaml).
 
-This template will create a new cluster with two EC2 `t2.large` nodes. 
+This template will create a new cluster with EKS on [AWS Fargate](https://aws.amazon.com/fargate/). 
 
 Edit the template file and set your region to one of the available regions for AMP:
 
@@ -89,7 +89,7 @@ aws amp list-workspaces
 
 ### Setup ADOT Collector 
 
-Download the template file [prometheus-deamonset.yaml](./ec2-eks-metrics-go-adot-ampamg/prometheus-deamonset.yaml) and edit this file with the parameters described in the next steps.
+Download the template file [prometheus-fargate.yaml](./ec2-eks-metrics-go-adot-ampamg/prometheus-fargate.yaml) and edit this file with the parameters described in the next steps.
 
 In this example, the ADOT Collector configuration uses an annotation `(scrape=true)` to tell which target endpoints to scrape. This allows the ADOT Collector to distinguish the sample app endpoint from kube-system endpoints in your cluster. You can remove this from the re-label configurations if you want to scrape a different sample app. 
 
@@ -116,7 +116,7 @@ aws sts get-caller-identity --query Account --output text
 After creating deployment file we can now apply this to our cluster by using the following command: 
 
 ```
-kubectl apply -f prometheus-deamonset.yaml
+kubectl apply -f prometheus-fargate.yaml
 ```
 
 !!! info
@@ -183,21 +183,7 @@ docker push "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:late
 ### Deploy
 Edit `prometheus-sample-app.yaml` to contain your ECR image path.
 
-Edit the deployment to reflect your image path. (example below)
-```
-apiVersion: apps/v1
-kind: Deployment
-...
-    spec:
-      containers:
-      - name: prometheus-sample-app
-        image: "$ACCOUNTID.dkr.ecr.$REGION.amazonaws.com/prometheus-sample-app:latest" # change to your image
-        command: ["/bin/main", "-listen_address=0.0.0.0:8080", "-metric_count=10"]
-        ports:
-        - name: web
-          containerPort: 8080
-...
-```
+-> show line here.
 
 Deploy the sample app to your cluster:
 ```
@@ -260,19 +246,12 @@ awscurl --service="aps" \
 
 ### Create a Grafana dashboard in AMG
 
-You can now create a dashboard in Grafana to visualise the data you collected in the test App.
+Use the following guides to create your first dashboard:
 
-Check out the AMG [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html), to learn more about Grafana dashboards.
+* [User Guide: Dashboards](https://docs.aws.amazon.com/grafana/latest/userguide/dashboard-overview.html)
+* [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/)
 
-* When creating a new dashboard, make sure it has a meaningful name.
-    * If you are creating a dashboard to play or experiment, then put the word TEST or TMP in the name.
-    * Consider including your name or initials in the dashboard name or as a tag so that people know who owns the dashboard.
-    * Remove temporary experiment dashboards when you are done with them.
-* If you create many related dashboards, think about how to cross-reference them for easy navigation. Refer to Best practices for managing dashboards for more information.
-* Avoid unnecessary dashboard refreshing to reduce the load on the network or backend. For example, if your data changes every hour, then you don’t need to set the dashboard refresh rate to 30 seconds.
-* Be careful with stacking graph data. The visualizations can be misleading, and hide important data. We recommend turning it off in most cases.
-
-You can check out [Best practices for creating dashboards](https://grafana.com/docs/grafana/latest/best-practices/best-practices-for-creating-dashboards/) for more information.
+-> Put more content here.
 
 ![placeholder-image](https://d1.awsstatic.com/products/grafana/amg-console-1.a9bcc3ab4dc86a378eb808851f54cee8a34cb300.png)
 
@@ -281,7 +260,7 @@ You can check out [Best practices for creating dashboards](https://grafana.com/d
 1. Remove the resources and cluster
 ```
 kubectl delete all --all
-eksctl delete cluster --name amp-eks-ec2
+eksctl delete cluster --name amp-eks-fargate
 ```
 2. Remove the AMP workspace
 ```
