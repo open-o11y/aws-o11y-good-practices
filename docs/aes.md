@@ -1,17 +1,17 @@
 # Amazon Elasticsearch Service(AES)
 
-## Logs
-[EXTERNAL] [Getting started with AES](https://intro.aesworkshops.com/)
-[EXTERNAL] [Log Analytics with AES](https://aesworkshops.com/log-analytics/mainlab/)
-[EXTERNAL] [Getting started with Open Distro for Elasticsearch](https://od4es.aesworkshops.com/)
-[EXTERNAL] [Know your data with Machine Learning](https://reinvent.aesworkshops.com/ant346/)
-[EXTERNAL] [Send CloudTrail Logs to AES](https://cloudtrail.aesworkshops.com/)
-[EXTERNAL] [Searching DynamoDB Data with AES](https://bookstore.aesworkshops.com/)
+- [Getting started with AES][aes-ws]
+- [Log Analytics with AES][loan-ws]
+- [Getting started with Open Distro for Elasticsearch][od-ws]
+- [Know your data with Machine Learning][ml-ws]
+- [Send CloudTrail Logs to AES][ct-ws]
+- [Searching DynamoDB Data with AES][bs-ws]
+- [Getting Started with Trace Analytics in AES][tracing-aes]
 
-## Metrics
-
-## Traces
-[EXTERNAL] [Getting Started with Trace Analytics in AES](https://aws.amazon.com/blogs/big-data/getting-started-with-trace-analytics-in-amazon-elasticsearch-service/)
-
-## Workshops
-[EXTERNAL] [Complete AES Examples and Demos](https://aesworkshops.com/)
+[aes-ws]: https://intro.aesworkshops.com/
+[loan-ws]: https://aesworkshops.com/log-analytics/mainlab/
+[od-ws]: https://od4es.aesworkshops.com/
+[ml-ws]: https://reinvent.aesworkshops.com/ant346/
+[ct-ws]: https://cloudtrail.aesworkshops.com/
+[bs-ws]: https://bookstore.aesworkshops.com/
+[tracing-aes]: https://aws.amazon.com/blogs/big-data/getting-started-with-trace-analytics-in-amazon-elasticsearch-service/
