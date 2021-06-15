@@ -1,9 +1,6 @@
 # Java
 
-## Logs
 
-## Metrics
-[EXTERNAL] [StatsD and Java Support in AWS Distro for OpenTelemetry](https://aws.amazon.com/blogs/opensource/aws-distro-for-opentelemetry-adds-statsd-and-java-support/)
+- [StatsD and Java Support in AWS Distro for OpenTelemetry][statsd-adot]
 
-
-## Traces
+[statsd-adot]: https://aws.amazon.com/blogs/opensource/aws-distro-for-opentelemetry-adds-statsd-and-java-support/

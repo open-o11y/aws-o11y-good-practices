@@ -1,8 +1,12 @@
-# Infra
+# Infrastructure & Databases
 
 ## Logs
-[EXTERNAL] [VPC Flow logs analysis using Amazon Elasticsearch Service](https://amazon-es-vpc-flowlogs.workshop.aws/en/)
+
+- [VPC Flow logs analysis using Amazon Elasticsearch Service][vpcf-ws]
 
 ## Metrics
 
-## Traces
+- [Amazon Managed Streaming for Apache Kafka: Open Monitoring with Prometheus][msk-prom]
+
+[vpcf-ws]: https://amazon-es-vpc-flowlogs.workshop.aws/en/
+[msk-prom]: https://docs.aws.amazon.com/msk/latest/developerguide/open-monitoring.html

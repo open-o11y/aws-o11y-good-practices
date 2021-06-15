@@ -23,7 +23,7 @@ nav:
   - CloudWatch: cw.md
   - AMP: amp.md
   - AMG: amg.md
-  - Datadog: dd.md
+  # - Datadog: dd.md
 - 'Tasks':
   - 'Anomaly Detection': anomaly-detection.md
   - 'Alerting': alerting.md

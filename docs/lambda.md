@@ -1,8 +1,13 @@
 # Lambda
 
 ## Logs
-[EXTERNAL] [Deploy and Monitor a Serverless Application](https://bookstore.aesworkshops.com/)
+
+- [Deploy and Monitor a Serverless Application][aes-ws]
 
 ## Metrics
 
-## Traces
+- [Introducing CloudWatch Lambda Insights][lambda-cwi]
+
+
+[aes-ws]: https://bookstore.aesworkshops.com/
+[lambda-cwi]: https://aws.amazon.com/blogs/mt/introducing-cloudwatch-lambda-insights/

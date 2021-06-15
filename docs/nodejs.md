@@ -1,8 +1,8 @@
 # Node.js
 
-## Logs
 
-## Metrics
-[EXTERNAL] [NodeJS library to generate embedded CloudWatch metrics](https://observability.workshop.aws/en/emf.html)
+- [NodeJS library to generate embedded CloudWatch metrics][node-cw]
 
-## Traces
+
+[node-cw]: https://observability.workshop.aws/en/emf.html
+

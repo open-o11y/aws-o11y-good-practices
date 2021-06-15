@@ -1,9 +1,7 @@
 # DynamoDB
 
-## Logs
-- [EXTERNAL] [Searcning DynamoDB data with Amazon Elasticsearch Service](https://search-ddb.aesworkshops.com/)
-- [EXTERNAL] [DynamoDB Contributor Insights](https://observability.workshop.aws/en/contributorinsights/_explore.html)
+- [Searching DynamoDB data with Amazon Elasticsearch Service][ddb-aes-ws]
+- [DynamoDB Contributor Insights][cwci-oow]
 
-## Metrics
-
-## Traces
+[ddb-aes-ws]: https://search-ddb.aesworkshops.com/
+[cwci-oow]: https://observability.workshop.aws/en/contributorinsights/_explore.html
