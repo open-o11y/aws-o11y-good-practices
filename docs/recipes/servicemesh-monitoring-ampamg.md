@@ -1,4 +1,4 @@
-# Using Amazon Managed Service for Prometheus to monitor App Mesh environment running on EKS
+# Using Amazon Managed Service for Prometheus to monitor App Mesh environment configured on EKS
 
 In this recipe we show you how to ingest [App Mesh](https://docs.aws.amazon.com/app-mesh/) envoy metrics in an Amazon EKS cluster to [Amazon Managed Service for Prometheus AMP](https://aws.amazon.com/prometheus/) and create a custom dashboard on [Amazon Managed Service for Grafana](https://aws.amazon.com/grafana/) to monitor the health and performance of microservices.
 
