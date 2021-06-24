@@ -1,9 +1,9 @@
-# Monitoring your service mesh container environment using Amazon Managed Service for Prometheus
+# Using Amazon Managed Service for Prometheus to monitor App Mesh environment running on EKS
 
-In this recipe we show you how to ingest App Mesh (https://docs.aws.amazon.com/app-mesh/) envoy metrics in an Amazon EKS cluster to Amazon Managed Service for Prometheus AMP (https://aws.amazon.com/prometheus/) and create a custom dashboard on Amazon Managed Service for Grafana AMG (https://aws.amazon.com/grafana/) to monitor the health and performance of microservices.
+In this recipe we show you how to ingest [App Mesh](https://docs.aws.amazon.com/app-mesh/) envoy metrics in an Amazon EKS cluster to [Amazon Managed Service for Prometheus AMP] (https://aws.amazon.com/prometheus/) and create a custom dashboard on [Amazon Managed Service for Grafana](https://aws.amazon.com/grafana/) to monitor the health and performance of microservices.
 
 
-As part of the implementation, we will create an AMP workspace, install the App Mesh Controller for Kubernetes and inject the envoy container into the pods. We will be collecting the envoy metrics using Grafana Agent (https://github.com/grafana/agent) configured in the EKS Cluster  [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and write them to AMP. Finally, we will be creating an AMG workspace and configure the AMP as the datasource and create a custom dashboard.
+As part of the implementation, we will create an AMP workspace, install the App Mesh Controller for Kubernetes and inject the envoy container into the pods. We will be collecting the envoy metrics using [Grafana Agent](https://github.com/grafana/agent) configured in the EKS Cluster  [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and write them to AMP. Finally, we will be creating an AMG workspace and configure the AMP as the datasource and create a custom dashboard.
 
 !!! note
     This guide will take approximately 45 minutes to complete.
@@ -14,7 +14,7 @@ In the following section we will be setting up the infrastructure for this recip
 ### Architecture
 
 
-![Architecture](https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/monitoring%20service%20mesh%20environment.png)
+![Architecture](../images/monitoring-appmesh-environment.png)
 
 The Grafana agent is configured to scrape the envoy metrics and ingest them to AMP through the AMP remote write endpoint 
 
@@ -29,9 +29,9 @@ The Grafana agent is configured to scrape the envoy metrics and ingest them to A
 * You need to install the [eksctl](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html) command in your environment.
 * You need to install [kubectl](https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html) in your environment. 
 * You have [docker](https://docs.docker.com/get-docker/) installed into your environment.
-* You need AMP workspace configured in your AWS account [Create-workspace] (https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-create-workspace.html)
-* You need to install [helm] (https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/index.html)
-* You need to enable [AWS-SSO] (https://docs.aws.amazon.com/singlesignon/latest/userguide/step1.html)
+* You need AMP workspace configured in your AWS account [Create-workspace](https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-onboard-create-workspace.html)
+* You need to install [helm](https://www.eksworkshop.com/beginner/060_helm/helm_intro/install/index.html)
+* You need to enable [AWS-SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/step1.html)
 
 ### Setup an EKS cluster
 
@@ -91,13 +91,13 @@ helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
 
 ### Scrape the metrics 
 
-AMP does not directly scrape operational metrics from containerized workloads in a Kubernetes cluster. You must deploy and manage a  Prometheus server or an OpenTelemetry agent such as the AWS Distro for OpenTelemetry Collector or the Grafana Agent to perform this task. In this blog post, we walk you through the process of configuring the Grafana Agent to scrape the envoy metrics and analyze them using AMP and AMG.
+AMP does not directly scrape operational metrics from containerized workloads in a Kubernetes cluster. You must deploy and manage a  Prometheus server or an OpenTelemetry agent such as the AWS Distro for OpenTelemetry Collector or the Grafana Agent to perform this task. In this receipe, we walk you through the process of configuring the Grafana Agent to scrape the envoy metrics and analyze them using AMP and AMG.
 
 ### Configure the Grafana Agent for AMP
 
 The Grafana Agent is a lightweight alternative to running a full Prometheus server. It keeps the necessary parts for discovering and scraping Prometheus exporters and sending metrics to a Prometheus-compatible backend, which in this case is AMP, and removes subsystems such as the storage, query, and alerting engines. The Grafana Agent is 100 percent compatible with Prometheus metrics and uses the Prometheus service discovery, scraping, write-ahead log, and remote write mechanisms from the Prometheus project. The Grafana Agent also supports basic sharding across every node in your Amazon EKS cluster by only collecting metrics running on the same node as the Grafana Agent pod, removing the need to decide between one giant machine to collect all of your Prometheus metrics and sharding through multiple manually managed Prometheus configurations. The Grafana Agent also includes native support for AWS Signature Version 4 for AWS Identity and Access Management (IAM) authentication, which means you don’t need to run a sidecar Signature Version 4 proxy, which reduces complexity, memory, and CPU demand.
 
-In this blog post, we walk through the steps to configure an IAM role to send Prometheus metrics to AMP. We install the Grafana Agent on the EKS cluster and forward metrics to AMP.
+In this receipe, we walk through the steps to configure an IAM role to send Prometheus metrics to AMP. We install the Grafana Agent on the EKS cluster and forward metrics to AMP.
 
 ### Configure Permissions
 The Grafana Agent scrapes operational metrics from containerized workloads running in the Amazon EKS cluster and sends them to AMP for long-term storage and subsequent querying by monitoring tools such as Grafana. Data sent to AMP must be signed with valid AWS credentials using the AWS Signature Version 4 algorithm to authenticate and authorize each client request for the managed service.
@@ -119,7 +119,7 @@ export REGION=$AWS_REGION
 export NAMESPACE="grafana-agent"
 export REMOTE_WRITE_URL="https://aps-workspaces.$REGION.amazonaws.com/workspaces/$WORKSPACE/api/v1/remote_write"
 ```
-Now create a manifest file, [grafana-agent.yaml] (./servicemesh-monitoring-ampamg/grafana-agent.yaml), with the scrape configuration to extract envoy metrics and deploy the Grafana Agent. This example deploys a DaemonSet named grafana-agent and a deployment (with one replica) named grafana-agent-deployment. The grafana-agent DaemonSet collects metrics from pods on the cluster. The grafana-agent-deployment collects metrics from services that do not live on the cluster, such as the Amazon EKS control plane. At the time of this writing, this solution will not work for the AWS Fargate data plane due to the lack of support for DaemonSet.
+Now create a manifest file, [grafana-agent.yaml](./servicemesh-monitoring-ampamg/grafana-agent.yaml), with the scrape configuration to extract envoy metrics and deploy the Grafana Agent. This example deploys a DaemonSet named grafana-agent and a deployment (with one replica) named grafana-agent-deployment. The grafana-agent DaemonSet collects metrics from pods on the cluster. The grafana-agent-deployment collects metrics from services that do not live on the cluster, such as the Amazon EKS control plane. At the time of this writing, this solution will not work for the AWS Fargate data plane due to the lack of support for DaemonSet.
 
 ```
 kubectl apply -f grafana-agent.yaml
@@ -163,19 +163,19 @@ while [ $loop_counter -le 300 ] ; do kubectl exec -n prod -it $dj_pod  -c dj  --
 ```
 
 ### Create an AMG workspace
-Creating an AMG workspace is straightforward. Follow the steps in the Getting Started with Amazon Managed Service for Grafana blog post (https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/). To grant users access to the dashboard, you must enable AWS SSO. After you create the workspace, you can assign access to the Grafana workspace to an individual user or a user group. By default, the user has a user type of viewer. Change the user type based on the user role. Add the AMP workspace as the data source and then start creating the dashboard.
+Creating an AMG workspace is straightforward. Follow the steps in the Getting Started with Amazon Managed Service for Grafana [blog post](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/). To grant users access to the dashboard, you must enable AWS SSO. After you create the workspace, you can assign access to the Grafana workspace to an individual user or a user group. By default, the user has a user type of viewer. Change the user type based on the user role. Add the AMP workspace as the data source and then start creating the dashboard.
 
 In this example, the user name is grafana-admin and the user type is Admin. Select the required data source. Review the configuration, and then choose Create workspace.
 
-![Creating AMP Workspace](https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/workspace%20creation.png)
+![Creating AMP Workspace](../images/workspace-creation.png)
 ### Configure the data source and custom dashboard
-To configure AMP as a data source, in the Data sources section, choose Configure in Grafana, which will launch a Grafana workspace in the browser. You can also manually launch the Grafana workspace URL in the browser. Use the instructions in the Getting Started with Amazon Managed Service for Grafana blog post (https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/) and specify the AMP workspace you created earlier as a data source.
-![Configuring Datasource] (https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/configuring%20AMP%20datasource.png)
+To configure AMP as a data source, in the Data sources section, choose Configure in Grafana, which will launch a Grafana workspace in the browser. You can also manually launch the Grafana workspace URL in the browser. Use the instructions in the Getting Started with Amazon Managed Service for Grafana [blog post](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/) and specify the AMP workspace you created earlier as a data source.
+![Configuring Datasource](../images/configuring-amp-datasource.png)
 
 As you can see from the screenshots, you can view envoy metrics like downstream latency, connections, response code, and more. You can use the filters shown to drill down to the envoy metrics of a particular application.
 
 After the data source is configured, import a custom dashboard to analyze the envoy metrics. Choose Import (shown below), and then enter the ID 11022. This will import the Envoy Global dashboard so you can start analyzing the envoy metrics.
-![Custom Dashboard](https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/Importing%20Dashboard.png)
+![Custom Dashboard](../images/import-dashboard.png)
 
 
 ### Configure alerts on AMG
@@ -193,12 +193,12 @@ aws sns subscribe --topic-arn arn:aws:sns:<region>:<account-id>:grafana-notifica
 Add a new notification channel from the Grafana dashboard.
 Configure the new notification channel named grafana-notification. For Type, use AWS SNS from the drop down. For Topic, use the ARN of the SNS topic you just created. For Auth provider, choose AWS SDK Default.
 
-![Creating Notification Channel](https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/Alert%20Configuration.png)
+![Creating Notification Channel](../images/alert-configuration.png)
 
 Now configure an alert if downstream latency exceeds five milliseconds in a one-minute period. In the dashboard, choose Downstream latency from the dropdown, and then choose Edit. On the Alert tab of the graph panel, configure how often the alert rule should be evaluated and the conditions that must be met for the alert to change state and initiate its notifications.
 
 In the following configuration, an alert is created if the downstream latency exceeds the threshold and notification will be sent through the configured grafana-alert-notification channel to the SNS topic.
-![Alert Configuration](https://github.com/saaish/aws-o11y-good-practices/blob/main/docs/images/downstream%20latency.png)
+![Alert Configuration](../images/downstream-latency.png)
 
 
 ## Cleanup
