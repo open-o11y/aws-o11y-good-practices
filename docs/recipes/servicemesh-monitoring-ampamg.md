@@ -168,6 +168,7 @@ Creating an AMG workspace is straightforward. Follow the steps in the Getting St
 In this example, the user name is grafana-admin and the user type is Admin. Select the required data source. Review the configuration, and then choose Create workspace.
 
 ![Creating AMP Workspace](../images/workspace-creation.png)
+
 ### Configure the data source and custom dashboard
 To configure AMP as a data source, in the Data sources section, choose Configure in Grafana, which will launch a Grafana workspace in the browser. You can also manually launch the Grafana workspace URL in the browser. Use the instructions in the Getting Started with Amazon Managed Service for Grafana [blog post](https://aws.amazon.com/blogs/mt/amazon-managed-grafana-getting-started/) and specify the AMP workspace you created earlier as a data source.
 ![Configuring Datasource](../images/configuring-amp-datasource.png)
@@ -177,7 +178,7 @@ As you can see from the screenshots, you can view envoy metrics like downstream 
 After the data source is configured, import a custom dashboard to analyze the envoy metrics. Choose Import (shown below), and then enter the ID 11022. This will import the Envoy Global dashboard so you can start analyzing the envoy metrics.
 ![Custom Dashboard](../images/import-dashboard.png)
 
-
+## End-to-End
 ### Configure alerts on AMG
 You can configure Grafana alerts when the metric increases beyond the intended threshold. With AMG, you can configure how often the alert must be evaluated in the dashboard and send the notification. Currently, AMG supports Amazon SNS, Opsgenie, Slack, PagerDuty, VictorOp notifier types. Before you create alert rules, you must create a notification channel.
 
