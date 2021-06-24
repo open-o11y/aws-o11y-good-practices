@@ -1,6 +1,6 @@
 # Using Amazon Managed Service for Prometheus to monitor App Mesh environment running on EKS
 
-In this recipe we show you how to ingest [App Mesh](https://docs.aws.amazon.com/app-mesh/) envoy metrics in an Amazon EKS cluster to [Amazon Managed Service for Prometheus AMP] (https://aws.amazon.com/prometheus/) and create a custom dashboard on [Amazon Managed Service for Grafana](https://aws.amazon.com/grafana/) to monitor the health and performance of microservices.
+In this recipe we show you how to ingest [App Mesh](https://docs.aws.amazon.com/app-mesh/) envoy metrics in an Amazon EKS cluster to [Amazon Managed Service for Prometheus AMP](https://aws.amazon.com/prometheus/) and create a custom dashboard on [Amazon Managed Service for Grafana](https://aws.amazon.com/grafana/) to monitor the health and performance of microservices.
 
 
 As part of the implementation, we will create an AMP workspace, install the App Mesh Controller for Kubernetes and inject the envoy container into the pods. We will be collecting the envoy metrics using [Grafana Agent](https://github.com/grafana/agent) configured in the EKS Cluster  [Amazon Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster and write them to AMP. Finally, we will be creating an AMG workspace and configure the AMP as the datasource and create a custom dashboard.
