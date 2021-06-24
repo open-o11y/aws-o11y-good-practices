@@ -60,7 +60,7 @@ This creates an EKS cluster named AMP-EKS-CLUSTER and a service account named ap
 
 ### Install the App Mesh Controller
 
-Next, we will run the below commands to install the App Mesh Controller (https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-kubernetes.html) and configure the Custom Resource Definitions 
+Next, we will run the below commands to install the App Mesh Controller(https://docs.aws.amazon.com/app-mesh/latest/userguide/getting-started-kubernetes.html) and configure the Custom Resource Definitions 
 
 ```
 helm repo add eks https://aws.github.io/eks-charts
