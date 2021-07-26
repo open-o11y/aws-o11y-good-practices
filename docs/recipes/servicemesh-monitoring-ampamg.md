@@ -49,7 +49,7 @@ Edit the template file and set your region to one of the available regions for A
 
 Make sure to overwrite this region in your session, for example in bash:
 ```
-export AWS_DEFAULT_REGION=eu-west-1
+export AWS_REGION=eu-west-1
 ```
 
 Create your cluster using the following command.
@@ -115,9 +115,8 @@ You need kubectl and eksctl CLI tools to run the script. They must be configured
 kubectl create namespace grafana-agent
 export WORKSPACE=$(aws amp list-workspaces | jq -r '.workspaces[] | select(.alias=="AMP-APPMESH").workspaceId')
 export ROLE_ARN=$(aws iam get-role --role-name EKS-GrafanaAgent-AMP-ServiceAccount-Role --query Role.Arn --output text)
-export REGION=$AWS_REGION
 export NAMESPACE="grafana-agent"
-export REMOTE_WRITE_URL="https://aps-workspaces.$REGION.amazonaws.com/workspaces/$WORKSPACE/api/v1/remote_write"
+export REMOTE_WRITE_URL="https://aps-workspaces.$AWS_REGION.amazonaws.com/workspaces/$WORKSPACE/api/v1/remote_write"
 ```
 Now create a manifest file, [grafana-agent.yaml](./servicemesh-monitoring-ampamg/grafana-agent.yaml), with the scrape configuration to extract envoy metrics and deploy the Grafana Agent. This example deploys a DaemonSet named grafana-agent and a deployment (with one replica) named grafana-agent-deployment. The grafana-agent DaemonSet collects metrics from pods on the cluster. The grafana-agent-deployment collects metrics from services that do not live on the cluster, such as the Amazon EKS control plane. At the time of this writing, this solution will not work for the AWS Fargate data plane due to the lack of support for DaemonSet.
 
@@ -185,12 +184,15 @@ You can configure Grafana alerts when the metric increases beyond the intended t
 In this example, configure Amazon SNS as a notification channel. The SNS topic must be prefixed with grafana for notifications to be successfully published to the topic.
 
 Use the following command to create an SNS topic named grafana-notification and subscribe an email address.
+Make sure you specify the region and account id in the below command:
 
 ```
 aws sns create-topic --name grafana-notification
 
 aws sns subscribe --topic-arn arn:aws:sns:<region>:<account-id>:grafana-notification --protocol email --notification-endpoint <email-id>
 ```
+
+
 Add a new notification channel from the Grafana dashboard.
 Configure the new notification channel named grafana-notification. For Type, use AWS SNS from the drop down. For Topic, use the ARN of the SNS topic you just created. For Auth provider, choose AWS SDK Default.
 
